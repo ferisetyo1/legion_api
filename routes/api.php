@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\GymController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\TransaksiTrainingController;
 
 /*
@@ -33,6 +34,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('home/notificationcount',  [NotificationController::class, 'notificationcount']);
     Route::get('home/privateberlangsung',  [TransaksiTrainingController::class, 'privateberlangsung']);
     Route::get('home/nearestgym',  [GymController::class, 'nearestgym']);
+    Route::get('products',  [ProdukController::class, 'index']);
+    Route::get('products/{id}',  [ProdukController::class, 'show']);
 });
 
 Route::get('/', function () {

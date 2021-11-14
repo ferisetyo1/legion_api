@@ -14,7 +14,7 @@ class CreateTableBanner extends Migration
     public function up()
     {
         Schema::create('legion_banner', function (Blueprint $table) {
-            $table->id();
+            $table->id("banner_id");
             $table->string("banner_gambar");
             $table->string("banner_kategori");
             $table->string("banner_detail");
