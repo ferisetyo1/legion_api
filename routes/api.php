@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\BannerController;
+use App\Http\Controllers\GymController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\TransaksiTrainingController;
 
@@ -31,6 +32,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('home/banner',  [TransaksiTrainingController::class, 'index']);
     Route::get('home/notificationcount',  [NotificationController::class, 'notificationcount']);
     Route::get('home/privateberlangsung',  [TransaksiTrainingController::class, 'privateberlangsung']);
+    Route::get('home/nearestgym',  [GymController::class, 'nearestgym']);
 });
 
 Route::get('/', function () {
