@@ -16,7 +16,7 @@ class produk extends Model
         'produk_berat',
         'produk_origin',
         'produk_detail',
-        'produk_gambar',
+        'produk_image',
         'produk_discount',
         'produk_harga',
         'produk_stok',

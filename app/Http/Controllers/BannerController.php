@@ -15,7 +15,7 @@ class BannerController extends Controller
         return response()->json([
             'status' => 'success',
             'msg' => "Get data successfully",
-            'data' => Banner::where("banner_kategori","=",$kategori)->limit($limit)->get()
+            'data' => Banner::where("banner_kategori",$kategori)->limit($limit)->get()
         ], 200);
     }
 

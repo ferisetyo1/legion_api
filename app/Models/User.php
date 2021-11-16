@@ -42,4 +42,33 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    // protected $appends = ['gym'];
+
+    // public function getDetailsAttribute()
+    // {
+    //     if ($this->role == "gym") {
+    //         return gym::firstWhere('gym_user_id',$this->id);
+    //     } else if ($this->role == "customer") {
+    //         return "customer";
+    //     } else if ($this->role == "trainer") {
+    //         return trainer::firstWhere('pt_user_id',$this->id);
+    //     } else {
+    //         return null;
+    //     }
+    // }
+    public function gym()
+    {
+        return $this->hasOne(gym::class,'gym_user_id');
+    }
+    
+    public function trainer()
+    {
+        return $this->hasOne(trainer::class,'pt_user_id');
+    }
+
+    public function customer()
+    {
+        return $this->hasOne(customer::class,'customer_user_id');
+    }
 }

@@ -26,13 +26,13 @@ class UserSeeder extends Seeder
                 'email' => 'trainer@gmail.com',
                 'name' => 'feri',
                 'password' => Hash::make('12345678'),
-                'role' => 'customer'
+                'role' => 'trainer'
             ],
             [
                 'email' => 'gymadmin@gmail.com',
                 'name' => 'feri',
                 'password' => Hash::make('12345678'),
-                'role' => 'gym_admin'
+                'role' => 'gym'
             ],
             [
                 'email' => 'superadmin@gmail.com',

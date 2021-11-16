@@ -15,13 +15,15 @@ class CreateGymsTable extends Migration
     {
         Schema::create('legion_gym', function (Blueprint $table) {
             $table->id("gym_id");
-            $table->string("gym_user_id");
+            $table->integer("gym_user_id");
             $table->string("gym_nama");
             $table->string("gym_alamat");
-            $table->decimal("gym_longitude");
-            $table->decimal("gym_lotitude");
+            $table->string("gym_longitude");
+            $table->string("gym_latitude");
             $table->string("gym_isActive");
             $table->string("gym_status");
+            $table->text("gym_desc");
+            $table->string("gym_image");
             $table->dateTime("gym_create_at")->useCurrent();
             $table->dateTime("gym_update_at")->useCurrent()->useCurrentOnUpdate();
         });

@@ -25,17 +25,21 @@ class ProdukController extends Controller
                 'total_items' => $produk->total(),
                 'total_page' => $produk->lastPage(),
                 'current_page' => $produk->currentPage(),
-                'data' => $produk->items()
+                'items' => $produk->items()
             ]
         ], 200);
     }
 
     public function show($id = 0, Request $request)
     {
+        $produk=produk::find($id);
         return response()->json([
             'status' => 'success',
             'msg' => "Get data successfully",
-            'data' => produk::find($id)
+            'data' => [
+                'produk'=>$produk,
+                'ongkir'=>[]
+            ]
         ], 200);
     }
 }

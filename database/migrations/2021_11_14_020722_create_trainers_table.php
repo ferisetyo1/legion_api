@@ -16,10 +16,12 @@ class CreateTrainersTable extends Migration
         Schema::create('legion_pt', function (Blueprint $table) {
             $table->id("pt_id");
             $table->integer("pt_gym_id");
-            $table->string("pt_user_id");
+            $table->integer("pt_user_id");
             $table->string("pt_nama");
             $table->date("pt_tanggal_lahir");
             $table->string("pt_gender");
+            $table->string("pt_image");
+            $table->text("pt_desc");
             $table->dateTime("pt_create_at")->useCurrent();
             $table->dateTime("pt_update_at")->useCurrent()->useCurrentOnUpdate();
         });

@@ -21,7 +21,7 @@ class CreateProduksTable extends Migration
             $table->string("produk_berat");
             $table->string("produk_origin");
             $table->text("produk_detail");
-            $table->string("produk_gambar");
+            $table->string("produk_image");
             $table->integer("produk_discount");
             $table->bigInteger("produk_harga");
             $table->integer("produk_stok");

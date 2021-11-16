@@ -22,7 +22,7 @@ class ProdukSeeder extends Seeder
                 'produk_berat' => "45 Kilogram",
                 'produk_origin' => "Impor",
                 'produk_detail' => "Sepeda Statis Air Bike versi OB-6401, Sepeda ini dibekali fasilitas untuk mendeteksi jumlah kecepatan, waktu, kalori yang dibakar, jarak tempuh, detak jantung pada saat berolahraga. Bukan hanya itu, Air-Bike juga mudah disimpan di ruangan yang sempit dan memberikan energik juga tantangan dalam berolahraga sepeda.",
-                'produk_gambar' => "https://nutrition.thelegion.co.id/images/products/1635221170_aa4614582301df0b1a9f.jpg",
+                'produk_image' => "https://nutrition.thelegion.co.id/images/products/1635221170_aa4614582301df0b1a9f.jpg",
                 'produk_discount' => 20,
                 'produk_harga' => 80000000,
                 'produk_stok' => 876
@@ -34,7 +34,7 @@ class ProdukSeeder extends Seeder
                 'produk_berat' => "45 Kilogram",
                 'produk_origin' => "Impor",
                 'produk_detail' => "Sepeda Statis Air Bike versi OB-6401, Sepeda ini dibekali fasilitas untuk mendeteksi jumlah kecepatan, waktu, kalori yang dibakar, jarak tempuh, detak jantung pada saat berolahraga. Bukan hanya itu, Air-Bike juga mudah disimpan di ruangan yang sempit dan memberikan energik juga tantangan dalam berolahraga sepeda.",
-                'produk_gambar' => "https://nutrition.thelegion.co.id/images/products/1635221170_aa4614582301df0b1a9f.jpg",
+                'produk_image' => "https://nutrition.thelegion.co.id/images/products/1635221170_aa4614582301df0b1a9f.jpg",
                 'produk_discount' => 20,
                 'produk_harga' => 80000000,
                 'produk_stok' => 876
@@ -46,7 +46,7 @@ class ProdukSeeder extends Seeder
                 'produk_berat' => "45 Kilogram",
                 'produk_origin' => "Impor",
                 'produk_detail' => "Sepeda Statis Air Bike versi OB-6401, Sepeda ini dibekali fasilitas untuk mendeteksi jumlah kecepatan, waktu, kalori yang dibakar, jarak tempuh, detak jantung pada saat berolahraga. Bukan hanya itu, Air-Bike juga mudah disimpan di ruangan yang sempit dan memberikan energik juga tantangan dalam berolahraga sepeda.",
-                'produk_gambar' => "https://nutrition.thelegion.co.id/images/products/1635221170_aa4614582301df0b1a9f.jpg",
+                'produk_image' => "https://nutrition.thelegion.co.id/images/products/1635221170_aa4614582301df0b1a9f.jpg",
                 'produk_discount' => 20,
                 'produk_harga' => 80000000,
                 'produk_stok' => 876
@@ -58,7 +58,7 @@ class ProdukSeeder extends Seeder
                 'produk_berat' => "45 Kilogram",
                 'produk_origin' => "Impor",
                 'produk_detail' => "Sepeda Statis Air Bike versi OB-6401, Sepeda ini dibekali fasilitas untuk mendeteksi jumlah kecepatan, waktu, kalori yang dibakar, jarak tempuh, detak jantung pada saat berolahraga. Bukan hanya itu, Air-Bike juga mudah disimpan di ruangan yang sempit dan memberikan energik juga tantangan dalam berolahraga sepeda.",
-                'produk_gambar' => "https://nutrition.thelegion.co.id/images/products/1635221170_aa4614582301df0b1a9f.jpg",
+                'produk_image' => "https://nutrition.thelegion.co.id/images/products/1635221170_aa4614582301df0b1a9f.jpg",
                 'produk_discount' => 20,
                 'produk_harga' => 80000000,
                 'produk_stok' => 876
@@ -70,7 +70,7 @@ class ProdukSeeder extends Seeder
                 'produk_berat' => "45 Kilogram",
                 'produk_origin' => "Impor",
                 'produk_detail' => "Sepeda Statis Air Bike versi OB-6401, Sepeda ini dibekali fasilitas untuk mendeteksi jumlah kecepatan, waktu, kalori yang dibakar, jarak tempuh, detak jantung pada saat berolahraga. Bukan hanya itu, Air-Bike juga mudah disimpan di ruangan yang sempit dan memberikan energik juga tantangan dalam berolahraga sepeda.",
-                'produk_gambar' => "https://nutrition.thelegion.co.id/images/products/1635221170_aa4614582301df0b1a9f.jpg",
+                'produk_image' => "https://nutrition.thelegion.co.id/images/products/1635221170_aa4614582301df0b1a9f.jpg",
                 'produk_discount' => 20,
                 'produk_harga' => 80000000,
                 'produk_stok' => 876

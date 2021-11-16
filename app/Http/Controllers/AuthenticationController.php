@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\gym;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -76,8 +77,7 @@ class AuthenticationController extends Controller
     }
 
     public function getuserinfo(Request $request) {
-        $user = $request->user();
-
+        $user=User::with('gym','trainer','customer')->findOrFail($request->user()->id);
         $respon = [
             'status' => 'success',
             'msg' => 'Berhasil mendapatkan data user',
