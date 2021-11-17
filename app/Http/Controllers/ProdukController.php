@@ -12,12 +12,12 @@ class ProdukController extends Controller
         $limit = isset($_GET["limit"]) ? $_GET["limit"] : 10;
         $produk = produk::where("produk_id", "!=", 0);
         if (isset($_GET['except'])) {
-            $produk=$produk->where("produk_id", "!=", $_GET['except']);
+            $produk = $produk->where("produk_id", "!=", $_GET['except']);
         }
         if (isset($_GET["query"])) {
-            $produk=$produk->where("produk_nama", "like", "%" . $_GET['query'] . "%");
+            $produk = $produk->where("produk_nama", "like", "%" . $_GET['query'] . "%");
         }
-        $produk=$produk->paginate($limit);
+        $produk = $produk->paginate($limit);
         return response()->json([
             'status' => 'success',
             'msg' => "Get data successfully",
@@ -32,13 +32,13 @@ class ProdukController extends Controller
 
     public function show($id = 0, Request $request)
     {
-        $produk=produk::find($id);
+        $produk = produk::with('review')->firstWhere("produk_id", $id);
         return response()->json([
             'status' => 'success',
             'msg' => "Get data successfully",
             'data' => [
-                'produk'=>$produk,
-                'ongkir'=>[]
+                'produk' => $produk,
+                'ongkir' => []
             ]
         ], 200);
     }

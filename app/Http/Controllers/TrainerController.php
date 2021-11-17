@@ -12,12 +12,12 @@ class TrainerController extends Controller
         $limit = isset($_GET["limit"]) ? $_GET["limit"] : 10;
         $trainer = trainer::where("pt_id", "!=", 0);
         if (isset($_GET['except'])) {
-            $trainer=$trainer->where("pt_id", "!=", $_GET['except']);
+            $trainer = $trainer->where("pt_id", "!=", $_GET['except']);
         }
         if (isset($_GET["query"])) {
-            $trainer=$trainer->where("pt_nama", "like", "%" . $_GET['query'] . "%");
+            $trainer = $trainer->where("pt_nama", "like", "%" . $_GET['query'] . "%");
         }
-        $trainer=$trainer->paginate($limit);
+        $trainer = $trainer->paginate($limit);
         return response()->json([
             'status' => 'success',
             'msg' => "Get data successfully",
@@ -35,7 +35,7 @@ class TrainerController extends Controller
         return response()->json([
             'status' => 'success',
             'msg' => "Get data successfully",
-            'data' =>  trainer::firstWhere('pt_id',$id)
+            'data' =>  trainer::with('review')->firstWhere('pt_id', $id)
         ], 200);
     }
 }

@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Banner;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -20,5 +19,6 @@ class DatabaseSeeder extends Seeder
         $this->call(GymSeeder::class);
         $this->call(CustomerSeeder::class);
         $this->call(TrainerSeeder::class);
+        $this->call(RatingReviewSeeder::class);
     }
 }

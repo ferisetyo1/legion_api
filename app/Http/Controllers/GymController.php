@@ -17,8 +17,8 @@ class GymController extends Controller
         cos( radians(gym_longitude) - radians(" . $longitude . ") ) + 
         sin( radians(" . $latitude . ") ) *
         sin( radians(gym_latitude) ) ) ) 
-        AS distance")
-            ->orderBy("distance");
+        AS gym_distance")
+            ->orderBy("gym_distance");
         $limit = isset($_GET["limit"]) ? $_GET["limit"] : 10;
         if (isset($_GET['except'])) {
             $gym = $gym->where("gym_id", "!=", $_GET['except']);
@@ -44,7 +44,7 @@ class GymController extends Controller
         return response()->json([
             'status' => 'success',
             'msg' => "Get data successfully",
-            'data' =>  gym::with("trainer")->firstWhere('gym_id',$id)
+            'data' =>  gym::with("trainer", "review")->firstWhere('gym_id', $id)
         ], 200);
     }
 }

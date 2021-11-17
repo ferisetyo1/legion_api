@@ -21,8 +21,28 @@ class gym extends Model
         'gym_image',
     ];
 
+    protected $appends = ["gym_star_count"];
+
+    public function getGymStarCountAttribute()
+    {
+        $review = RatingReview::where('rr_gym_id', $this->gym_id)->get();
+        $star_count = 0;
+        $i = 0;
+        foreach ($review as $key => $value) {
+            $star_count += $value->rr_star;
+            $i++;
+        }
+        if ($i > 0 && $star_count > 0) return $star_count / $i;
+        else return 0;
+    }
+
     public function trainer()
     {
-        return $this->hasMany(trainer::class,"pt_gym_id","gym_id");
+        return $this->hasMany(trainer::class, "pt_gym_id", "gym_id");
+    }
+
+    public function review()
+    {
+        return  $this->hasMany(RatingReview::class, "rr_gym_id", "gym_id");
     }
 }
