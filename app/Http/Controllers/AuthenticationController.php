@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\customer;
 use App\Models\gym;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use \Validator;
 use App\Models\User;
+use Database\Seeders\CustomerSeeder;
+use Illuminate\Support\Facades\DB;
 
 class AuthenticationController extends Controller
 {
@@ -100,6 +103,45 @@ class AuthenticationController extends Controller
             'data' => null,
         ];
         return response()->json($respon, 200);
+    }
+
+    public function registercustomer(Request $request)
+    {
+        $user = User::where('email', $request->email)->first();
+        if ($user==null) {
+            $user = User::insert([
+                'email' => $request->email,
+                'name' =>$request->nama,
+                'password' => Hash::make($request->password),
+                'role' => 'customer',
+                
+            ]);
+            $user=User::find(DB::getPdo()->lastInsertId());
+            customer::insert([
+                'customer_user_id'=>DB::getPdo()->lastInsertId(),
+                'customer_nama'=>$request->nama,
+                'customer_tinggi'=>$request->tinggi,
+                'customer_berat'=>$request->berat,
+                'customer_gender'=>$request->gender,
+                'customer_image' => $request->foto
+            ]);
+            $tokenResult = $user->createToken('token-auth')->plainTextToken;
+            $respon = [
+                'status' => "success",
+                'msg' => 'Berhasil Register',
+                'data' => [
+                    'access_token' => $tokenResult,
+                    'token_type' => 'Bearer',
+                ],
+            ];
+            return response()->json($respon, 200);
+        }
+        $respon = [
+            'status' => "success",
+            'msg' => 'Gagal register email sudah dipakai',
+            'data' => null
+        ];
+        return response()->json($respon, 400);
     }
 
     public function logoutall(Request $request)

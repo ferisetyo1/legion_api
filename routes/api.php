@@ -28,6 +28,7 @@ Route::get('banner', [BannerController::class, 'index']);
 Route::post('banner/create', [BannerController::class, 'create']);
 Route::post('login', [AuthenticationController::class, 'login']);
 Route::post('login/google', [AuthenticationController::class, 'logingoogle']);
+Route::post('register/customer', [AuthenticationController::class, 'registercustomer']);
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('logout', [AuthenticationController::class, 'logout']);
     Route::post('logoutall',  [AuthenticationController::class, 'logoutall']);
