@@ -27,6 +27,7 @@ use App\Http\Controllers\TransaksiTrainingController;
 Route::get('banner', [BannerController::class, 'index']);
 Route::post('banner/create', [BannerController::class, 'create']);
 Route::post('login', [AuthenticationController::class, 'login']);
+Route::post('login/google', [AuthenticationController::class, 'logingoogle']);
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('logout', [AuthenticationController::class, 'logout']);
     Route::post('logoutall',  [AuthenticationController::class, 'logoutall']);
@@ -43,9 +44,10 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 });
 
 Route::get('/', function () {
-    return [
+    $respon = [
         'status' => 'error',
         'msg' => 'Unathorized',
         'data' => null,
     ];
+    return response()->json($respon, 401);
 })->name('login');
