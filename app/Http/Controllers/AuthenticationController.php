@@ -136,6 +136,19 @@ class AuthenticationController extends Controller
             ];
             return response()->json($respon, 200);
         }
+
+        if ($request->isgoogle=="isgoogle") {
+            $tokenResult = $user->createToken('token-auth')->plainTextToken;
+            $respon = [
+                'status' => "success",
+                'msg' => 'Berhasil Register',
+                'data' => [
+                    'access_token' => $tokenResult,
+                    'token_type' => 'Bearer',
+                ],
+            ];
+            return response()->json($respon, 200);
+        }
         $respon = [
             'status' => "success",
             'msg' => 'Gagal register email sudah dipakai',
