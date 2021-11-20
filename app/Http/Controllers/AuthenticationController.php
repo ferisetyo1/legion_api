@@ -11,7 +11,12 @@ use Illuminate\Support\Facades\Auth;
 use \Validator;
 use App\Models\User;
 use Database\Seeders\CustomerSeeder;
+use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Str;
 
 class AuthenticationController extends Controller
 {
@@ -118,7 +123,7 @@ class AuthenticationController extends Controller
             ]);
             $user=User::find(DB::getPdo()->lastInsertId());
             customer::insert([
-                'customer_user_id'=>DB::getPdo()->lastInsertId(),
+                'customer_user_id'=>$user->id,
                 'customer_nama'=>$request->nama,
                 'customer_tinggi'=>$request->tinggi,
                 'customer_berat'=>$request->berat,
@@ -178,5 +183,66 @@ class AuthenticationController extends Controller
             'data' => $user,
         ];
         return response()->json($respon, 200);
+    }
+
+    public function sendPasswordResetLinkEmail(Request $request) {
+		$request->validate(['email' => 'required|email']);
+
+		$status = Password::sendResetLink(
+			$request->only('email')
+		);
+
+		if($status === Password::RESET_LINK_SENT) {
+			return response()->json(['message' => __($status)], 200);
+		} else {
+			throw ValidationException::withMessages([
+				'email' => __($status)
+			]);
+		}
+	}
+
+	public function resetPassword(Request $request) {
+		$request->validate([
+			'token' => 'required',
+			'email' => 'required|email',
+			'password' => 'required|min:8|confirmed',
+		]);
+
+		$status = Password::reset(
+			$request->only('email', 'password', 'password_confirmation', 'token'),
+			function ($user, $password) use ($request) {
+				$user->forceFill([
+					'password' => Hash::make($password)
+				])->setRememberToken(Str::random(60));
+
+				$user->save();
+
+				event(new PasswordReset($user));
+			}
+		);
+
+		if($status == Password::PASSWORD_RESET) {
+			return response()->json(['message' => __($status)], 200);
+		} else {
+			throw ValidationException::withMessages([
+				'email' => __($status)
+			]);
+		}
+	}
+
+    public function mailtest(Request $request)
+    {
+        $user=User::firstWhere('email',$request->email);
+        if ($user!=null) {
+            Mail::to($request->email)->send(new \App\Mail\ResetPassword(['nama'=>$user->name]));
+            $respon = [
+                'status' => 'success',
+                'msg' => 'Email berhasil terkirim ',
+                'data' => null,
+            ];
+            return response()->json($respon, 200);
+        }else{
+
+        }
     }
 }
