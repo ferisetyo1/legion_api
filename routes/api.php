@@ -29,7 +29,7 @@ Route::post('banner/create', [BannerController::class, 'create']);
 Route::post('login', [AuthenticationController::class, 'login']);
 Route::post('login/google', [AuthenticationController::class, 'logingoogle']);
 Route::post('register/customer', [AuthenticationController::class, 'registercustomer']);
-Route::post('mailtest', [AuthenticationController::class, 'mailtest']);
+Route::post('password/reset/request', [AuthenticationController::class, 'requestreset']);
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('logout', [AuthenticationController::class, 'logout']);
     Route::post('logoutall',  [AuthenticationController::class, 'logoutall']);

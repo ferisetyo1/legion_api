@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\customer;
 use App\Models\gym;
+use App\Models\ResetPassword;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -113,21 +114,21 @@ class AuthenticationController extends Controller
     public function registercustomer(Request $request)
     {
         $user = User::where('email', $request->email)->first();
-        if ($user==null) {
+        if ($user == null) {
             $user = User::insert([
                 'email' => $request->email,
-                'name' =>$request->nama,
+                'name' => $request->nama,
                 'password' => Hash::make($request->password),
                 'role' => 'customer',
-                
+
             ]);
-            $user=User::find(DB::getPdo()->lastInsertId());
+            $user = User::find(DB::getPdo()->lastInsertId());
             customer::insert([
-                'customer_user_id'=>$user->id,
-                'customer_nama'=>$request->nama,
-                'customer_tinggi'=>$request->tinggi,
-                'customer_berat'=>$request->berat,
-                'customer_gender'=>$request->gender,
+                'customer_user_id' => $user->id,
+                'customer_nama' => $request->nama,
+                'customer_tinggi' => $request->tinggi,
+                'customer_berat' => $request->berat,
+                'customer_gender' => $request->gender,
                 'customer_image' => $request->foto
             ]);
             $tokenResult = $user->createToken('token-auth')->plainTextToken;
@@ -142,7 +143,7 @@ class AuthenticationController extends Controller
             return response()->json($respon, 200);
         }
 
-        if ($request->isgoogle=="isgoogle") {
+        if ($request->isgoogle == "isgoogle") {
             $tokenResult = $user->createToken('token-auth')->plainTextToken;
             $respon = [
                 'status' => "success",
@@ -185,64 +186,42 @@ class AuthenticationController extends Controller
         return response()->json($respon, 200);
     }
 
-    public function sendPasswordResetLinkEmail(Request $request) {
-		$request->validate(['email' => 'required|email']);
-
-		$status = Password::sendResetLink(
-			$request->only('email')
-		);
-
-		if($status === Password::RESET_LINK_SENT) {
-			return response()->json(['message' => __($status)], 200);
-		} else {
-			throw ValidationException::withMessages([
-				'email' => __($status)
-			]);
-		}
-	}
-
-	public function resetPassword(Request $request) {
-		$request->validate([
-			'token' => 'required',
-			'email' => 'required|email',
-			'password' => 'required|min:8|confirmed',
-		]);
-
-		$status = Password::reset(
-			$request->only('email', 'password', 'password_confirmation', 'token'),
-			function ($user, $password) use ($request) {
-				$user->forceFill([
-					'password' => Hash::make($password)
-				])->setRememberToken(Str::random(60));
-
-				$user->save();
-
-				event(new PasswordReset($user));
-			}
-		);
-
-		if($status == Password::PASSWORD_RESET) {
-			return response()->json(['message' => __($status)], 200);
-		} else {
-			throw ValidationException::withMessages([
-				'email' => __($status)
-			]);
-		}
-	}
-
-    public function mailtest(Request $request)
+    public function requestreset(Request $request)
     {
-        $user=User::firstWhere('email',$request->email);
-        if ($user!=null) {
-            Mail::to($request->email)->send(new \App\Mail\ResetPassword(['nama'=>$user->name]));
+        $user = User::firstWhere('email', $request->email);
+        if ($user != null) {
+            $token = md5(uniqid($user->email, true));
+            ResetPassword::insert(['email' => $request->email, 'token' => $token]);
+            Mail::to($request->email)->send(new \App\Mail\ResetPassword(['url_reset' => url("password/reset?token=$token")]));
             $respon = [
                 'status' => 'success',
-                'msg' => 'Email berhasil terkirim ',
+                'msg' => 'Email berhasil terkirim',
                 'data' => null,
             ];
             return response()->json($respon, 200);
-        }else{
+        } else {
+            $respon = [
+                'status' => 'success',
+                'msg' => 'User tidak ditemukan',
+                'data' => null,
+            ];
+            return response()->json($respon, 400);
+        }
+    }
 
+    public function resetpassword(Request $request)
+    {
+        $validate = Validator::make($request->all(), [
+            'password' => 'required|min:8|required_with:password_confirmed|same:password_confirmed',
+        ]);
+        if ($validate->fails()) {
+            return back()->withInput()->with("error","Password harus 8 karakter dan cocok.");
+        } else {
+            $resetpassword=ResetPassword::firstWhere('token',$request->token);
+            $user=User::firstWhere('email',$resetpassword->email);
+            $user->password=Hash::make($request->password);
+            $resetpassword->delete();
+            return redirect('sukses-reset');
         }
     }
 }

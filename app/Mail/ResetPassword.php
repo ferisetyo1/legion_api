@@ -29,11 +29,11 @@ class ResetPassword extends Mailable
      */
     public function build()
     {
-        return $this->from('legionadmin@legion.digitalgoal.id', 'Admin Legion')
+        return $this->from('feri.demoz001@gmail.com', 'Admin Legion')
             ->subject('Request Reset Password')
             ->markdown('mail.reset-password')
             ->with([
-                'name'=>$this->user['nama']
+                'url_reset'=>$this->user['url_reset']
             ]);
     }
 }
