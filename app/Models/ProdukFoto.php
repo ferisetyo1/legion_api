@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ReviewFoto extends Model
+class ProdukFoto extends Model
 {
     use HasFactory;
-    protected $primaryKey = "rf_id";
-    public $table = "legion_review_fotos";
+    public $table = "legion_foto_produk";
+    protected $primaryKey = "fp_id";
     protected $fillable = [
-        'rf_rr_id',
-        'rf_image_url',
+        'fp_produk_id',
+        'fp_image_url',
     ];
 }

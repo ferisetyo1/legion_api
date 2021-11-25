@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\fasilitas;
 use Illuminate\Database\Seeder;
 
 class FasilitasSeeder extends Seeder
@@ -13,6 +14,12 @@ class FasilitasSeeder extends Seeder
      */
     public function run()
     {
-        //
+        fasilitas::insert(
+            [
+                'gf_gym_id' => 1,
+                'gf_nama' => 'Aerial Yoga',
+                'gf_image_url' => ''
+            ]
+        );
     }
 }

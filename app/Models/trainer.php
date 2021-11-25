@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class trainer extends Model
 {
     use HasFactory;
+    protected $primaryKey = "pt_id";
     protected $table="legion_pt";
     protected $fillable = [
         'pt_gym_id',

@@ -34,6 +34,7 @@ return array(
     'App\\Models\\Banner' => $baseDir . '/app/Models/Banner.php',
     'App\\Models\\HargaTrainer' => $baseDir . '/app/Models/HargaTrainer.php',
     'App\\Models\\ProdukDetail' => $baseDir . '/app/Models/ProdukDetail.php',
+    'App\\Models\\ProdukFoto' => $baseDir . '/app/Models/ProdukFoto.php',
     'App\\Models\\RatingReview' => $baseDir . '/app/Models/RatingReview.php',
     'App\\Models\\ResetPassword' => $baseDir . '/app/Models/ResetPassword.php',
     'App\\Models\\ReviewFoto' => $baseDir . '/app/Models/ReviewFoto.php',

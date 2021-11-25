@@ -31,7 +31,8 @@ class GymSeeder extends Seeder
             'gym_isActive' => "active",
             'gym_status' => "0",
             'gym_desc' => $faker->paragraph,
-            'gym_image' => $faker->imageUrl(300, 300, 'cats')
+            'gym_image' => $faker->imageUrl(300, 300, 'cats'),
+            'gym_kota' => "malang",
         ]);
         for ($i = 0; $i < 100; $i++) {
             $user = User::insert([
@@ -49,7 +50,8 @@ class GymSeeder extends Seeder
                 'gym_isActive' => "active",
                 'gym_status' => "0",
                 'gym_desc' => $faker->paragraph,
-                'gym_image' => $faker->imageUrl(300, 300, 'cats')
+                'gym_image' => $faker->imageUrl(300, 300, 'cats'),
+                'gym_kota' => "malang",
             ]);
             $gymid = DB::getPdo()->lastInsertId();
             for ($j = 0; $j < 2; $j++) {

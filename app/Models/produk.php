@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class produk extends Model
 {
     use HasFactory;
+    protected $primaryKey = "produk_id";
     public $table = "legion_produk";
     protected $fillable = [
         'produk_nama',
@@ -40,5 +41,15 @@ class produk extends Model
     public function review()
     {
         return  $this->hasMany(RatingReview::class,"rr_produk_id","produk_id");
+    }
+    
+    public function foto()
+    {
+        return  $this->hasMany(ProdukFoto::class,"fp_produk_id","produk_id");
+    }
+    
+    public function varian()
+    {
+        return  $this->hasMany(ProdukDetail::class,"dp_produk_id","produk_id");
     }
 }

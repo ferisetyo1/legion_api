@@ -9,6 +9,7 @@ class gym extends Model
 {
     use HasFactory;
     protected $table = "legion_gym";
+    protected $primaryKey = "gym_id";
     protected $fillable = [
         'gym_user_id',
         'gym_nama',
@@ -44,5 +45,10 @@ class gym extends Model
     public function review()
     {
         return  $this->hasMany(RatingReview::class, "rr_gym_id", "gym_id");
+    }
+    
+    public function fasilitas()
+    {
+        return  $this->hasMany(fasilitas::class, "gf_gym_id", "gym_id");
     }
 }

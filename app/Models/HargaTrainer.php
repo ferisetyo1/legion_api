@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class HargaTrainer extends Model
 {
     use HasFactory;
+    protected $primaryKey = "ht_id";
 }

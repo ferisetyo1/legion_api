@@ -21,10 +21,6 @@ class CreateProduksTable extends Migration
             $table->string("produk_berat");
             $table->string("produk_origin");
             $table->text("produk_detail");
-            $table->string("produk_image");
-            $table->integer("produk_discount");
-            $table->bigInteger("produk_harga");
-            $table->integer("produk_stok");
             $table->dateTime("produk_create_at")->useCurrent();
             $table->dateTime("produk_update_at")->useCurrent()->useCurrentOnUpdate();
         });

@@ -13,8 +13,8 @@ class CreateHargaTrainersTable extends Migration
      */
     public function up()
     {
-        Schema::create('harga_trainers', function (Blueprint $table) {
-            $table->id();
+        Schema::create('legion_harga_trainer', function (Blueprint $table) {
+            $table->id("ht_id");
             $table->timestamps();
         });
     }

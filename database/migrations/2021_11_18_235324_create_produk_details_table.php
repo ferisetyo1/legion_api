@@ -13,9 +13,15 @@ class CreateProdukDetailsTable extends Migration
      */
     public function up()
     {
-        Schema::create('produk_details', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::create('legion_detail_produk', function (Blueprint $table) {
+            $table->id('dp_id');
+            $table->integer("dp_produk_id");
+            $table->string("dp_nama");
+            $table->integer("dp_discount");
+            $table->bigInteger("dp_harga");
+            $table->integer("dp_stok");
+            $table->dateTime("dp_create_at")->useCurrent();
+            $table->dateTime("dp_update_at")->useCurrent()->useCurrentOnUpdate();
         });
     }
 
@@ -26,6 +32,6 @@ class CreateProdukDetailsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('produk_details');
+        Schema::dropIfExists('legion_detail_produk');
     }
 }

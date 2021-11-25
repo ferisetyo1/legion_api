@@ -549,6 +549,7 @@ class ComposerStaticInitba6498eed74fd2c534c176963dd77e0f
         'App\\Models\\Banner' => __DIR__ . '/../..' . '/app/Models/Banner.php',
         'App\\Models\\HargaTrainer' => __DIR__ . '/../..' . '/app/Models/HargaTrainer.php',
         'App\\Models\\ProdukDetail' => __DIR__ . '/../..' . '/app/Models/ProdukDetail.php',
+        'App\\Models\\ProdukFoto' => __DIR__ . '/../..' . '/app/Models/ProdukFoto.php',
         'App\\Models\\RatingReview' => __DIR__ . '/../..' . '/app/Models/RatingReview.php',
         'App\\Models\\ResetPassword' => __DIR__ . '/../..' . '/app/Models/ResetPassword.php',
         'App\\Models\\ReviewFoto' => __DIR__ . '/../..' . '/app/Models/ReviewFoto.php',
