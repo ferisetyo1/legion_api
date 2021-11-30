@@ -22,6 +22,8 @@ class CreateTrainersTable extends Migration
             $table->string("pt_gender");
             $table->string("pt_image");
             $table->text("pt_desc");
+            $table->string("pt_kota");
+            $table->text("pt_alamat");
             $table->dateTime("pt_create_at")->useCurrent();
             $table->dateTime("pt_update_at")->useCurrent()->useCurrentOnUpdate();
         });

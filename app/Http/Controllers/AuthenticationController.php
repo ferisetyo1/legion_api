@@ -120,7 +120,7 @@ class AuthenticationController extends Controller
                 'name' => $request->nama,
                 'password' => Hash::make($request->password),
                 'role' => 'customer',
-
+                'foto' => $request->foto,
             ]);
             $user = User::find(DB::getPdo()->lastInsertId());
             customer::insert([

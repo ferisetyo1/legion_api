@@ -5,10 +5,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\GymController;
+use App\Http\Controllers\HargaTrainerController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\TrainerController;
 use App\Http\Controllers\TransaksiTrainingController;
+use App\Models\HargaTrainer;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,6 +45,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('products/{id}',  [ProdukController::class, 'show']);
     Route::get('trainers',  [TrainerController::class, 'index']);
     Route::get('trainers/{id}',  [TrainerController::class, 'show']);
+    Route::post('trainers/add/price',  [HargaTrainerController::class, 'create']);
 });
 
 Route::get('/', function () {

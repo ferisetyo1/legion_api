@@ -24,6 +24,8 @@ class TrainerSeeder extends Seeder
             'pt_gender' => 'laki-laki',
             'pt_desc' => 'laki-laki jantan',
             'pt_image' => $faker->imageUrl(300,300,'person'),
+            'pt_kota' => 'malang',
+            'pt_alamat'=>$faker->address
         ]);
     }
 }

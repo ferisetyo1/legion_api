@@ -15,7 +15,12 @@ class CreateHargaTrainersTable extends Migration
     {
         Schema::create('legion_harga_trainer', function (Blueprint $table) {
             $table->id("ht_id");
-            $table->timestamps();
+            $table->integer('ht_pt_id');
+            $table->integer('ht_harga');
+            $table->integer('ht_waktu');
+            $table->integer('ht_kategory');
+            $table->dateTime("ht_create_at")->useCurrent();
+            $table->dateTime("ht_update_at")->useCurrent()->useCurrentOnUpdate();
         });
     }
 

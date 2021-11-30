@@ -18,8 +18,10 @@ class trainer extends Model
         'pt_gender',
         'pt_desc',
         'pt_image',
+        'pt_kota',
+        'pt_alamat'
     ];
-    protected $appends = ["pt_star_count"];
+    protected $appends = ["pt_star_count","pt_default_harga"];
 
     public function getPtStarCountAttribute()
     {
@@ -33,8 +35,21 @@ class trainer extends Model
         if ($i > 0 && $star_count > 0) return $star_count / $i;
         else return 0;
     }
+
+    public function getPtDefaultHargaAttribute(){
+        return HargaTrainer::firstWhere("ht_pt_id",$this->pt_id);
+    }
+
     public function review()
     {
         return  $this->hasMany(RatingReview::class,"rr_pt_id","pt_id");
+    }
+    public function harga()
+    {
+        return  $this->hasMany(HargaTrainer::class,"ht_pt_id","pt_id");
+    }
+    public function gym()
+    {
+        return  $this->belongsTo(gym::class,"pt_gym_id","gym_id");
     }
 }

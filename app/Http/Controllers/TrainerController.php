@@ -35,7 +35,7 @@ class TrainerController extends Controller
         return response()->json([
             'status' => 'success',
             'msg' => "Get data successfully",
-            'data' =>  trainer::with('review')->firstWhere('pt_id', $id)
+            'data' =>  trainer::with('review','harga','gym')->firstWhere('pt_id', $id)
         ], 200);
     }
 }

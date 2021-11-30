@@ -40,12 +40,12 @@ class produk extends Model
 
     public function review()
     {
-        return  $this->hasMany(RatingReview::class,"rr_produk_id","produk_id");
+        return  $this->hasMany(RatingReview::class,"rr_produk_id","produk_id")->take(2);
     }
     
     public function foto()
     {
-        return  $this->hasMany(ProdukFoto::class,"fp_produk_id","produk_id");
+        return  $this->hasMany(ProdukFoto::class,"fp_produk_id","produk_id")->take(10);
     }
     
     public function varian()

@@ -44,7 +44,7 @@ class gym extends Model
 
     public function review()
     {
-        return  $this->hasMany(RatingReview::class, "rr_gym_id", "gym_id");
+        return  $this->hasMany(RatingReview::class, "rr_gym_id", "gym_id")->take(2);
     }
     
     public function fasilitas()

@@ -39,7 +39,8 @@ class GymSeeder extends Seeder
                 'email' => $faker->email,
                 'name' => $faker->name,
                 'password' => Hash::make('12345678'),
-                'role' => 'gym'
+                'role' => 'gym',
+                'foto' => $faker->imageUrl(300,300,'person'),
             ],);
             gym::insert([
                 'gym_user_id' => DB::getPdo()->lastInsertId(),
@@ -60,7 +61,8 @@ class GymSeeder extends Seeder
                     'email' => $faker->email,
                     'name' => $name,
                     'password' => Hash::make('12345678'),
-                    'role' => 'trainer'
+                    'role' => 'trainer',
+                    'foto' => $faker->imageUrl(300,300,'person'),
                 ],);
                 trainer::insert([
                     'pt_gym_id' => $gymid,
@@ -70,6 +72,8 @@ class GymSeeder extends Seeder
                     'pt_gender' => 'laki-laki',
                     'pt_desc' => $faker->paragraph,
                     'pt_image' => $faker->imageUrl(300, 300, 'person'),
+                    'pt_kota' => 'malang',
+                    'pt_alamat' => $faker->address
                 ]);
             }
         }

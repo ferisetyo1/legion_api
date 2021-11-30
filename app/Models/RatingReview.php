@@ -18,9 +18,14 @@ class RatingReview extends Model
         'rr_star',
         'rr_desc'
     ];
-    protected $appends = ["rr_foto"];
+    protected $appends = ["rr_foto","rr_user"];
     public function getRrFotoAttribute()
     {
         return ReviewFoto::where('rf_rr_id',$this->rr_id)->get();
+    }
+
+    public function getRrUserAttribute()
+    {
+        return User::find($this->rr_user_id);
     }
 }
