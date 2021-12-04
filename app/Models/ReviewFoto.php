@@ -10,6 +10,7 @@ class ReviewFoto extends Model
     use HasFactory;
     protected $primaryKey = "rf_id";
     public $table = "legion_review_fotos";
+    public $timestamps = false;
     protected $fillable = [
         'rf_rr_id',
         'rf_image_url',

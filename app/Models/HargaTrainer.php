@@ -10,6 +10,7 @@ class HargaTrainer extends Model
     use HasFactory;
     protected $table="legion_harga_trainer";
     protected $primaryKey = "ht_id";
+    public $timestamps = false;
     protected $fillable = [
         'ht_pt_id',
         'ht_harga',

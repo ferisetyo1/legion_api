@@ -224,4 +224,38 @@ class AuthenticationController extends Controller
             return redirect('sukses-reset');
         }
     }
+
+    public function updateprofilcustomer(Request $request){
+        $validate = Validator::make($request->all(),[
+            'nama'=>"required:min:4",
+            'image' => 'file|image|mimes:jpeg,png,jpg|max:2048',
+            'tinggi' => 'numeric',
+            'berat' => 'numeric',
+        ]);
+        if ($validate->fails()) {
+            $respon = [
+                'status' => 'error',
+                'msg' => 'Validator error',
+                'data' => $validate->errors(),
+            ];
+            return response()->json($respon, 400);
+        }else{
+            $user=User::find($request->user()->id);
+            $user->name=$request->nama;
+            $user->save();
+            $customer=customer::find($user->customer->customer_id);
+            $customer->customer_nama=$request->nama;
+            $customer->customer_tinggi=$request->tinggi;
+            $customer->customer_berat=$request->berat;
+            $customer->customer_gender=$request->gender;
+            // $customer->save();
+            $respon = [
+                'status' => 'error',
+                'msg' => 'Success update user.',
+                'data' => $user,
+                'data3'=>$customer->save()
+            ];
+            return response()->json($respon, 200);
+        }
+    }
 }

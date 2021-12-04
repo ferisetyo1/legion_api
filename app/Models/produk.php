@@ -10,6 +10,7 @@ class produk extends Model
     use HasFactory;
     protected $primaryKey = "produk_id";
     public $table = "legion_produk";
+    public $timestamps = false;
     protected $fillable = [
         'produk_nama',
         'produk_kategori',

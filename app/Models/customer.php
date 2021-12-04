@@ -10,6 +10,7 @@ class customer extends Model
     use HasFactory;
     protected $table = 'legion_customer';
     protected $primaryKey = "customer_id";
+    public $timestamps = false;
     protected $fillable = [
         'customer_user_id',
         'customer_nama',

@@ -10,6 +10,7 @@ class fasilitas extends Model
     use HasFactory;
     protected $table = 'legion_gym_fasilitas';
     protected $primaryKey = "gf_id";
+    public $timestamps = false;
     protected $fillable = [
         'gf_gym_id',
         'gf_nama',

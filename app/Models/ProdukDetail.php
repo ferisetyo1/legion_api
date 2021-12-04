@@ -10,6 +10,7 @@ class ProdukDetail extends Model
     use HasFactory;
     public $table = "legion_detail_produk";
     protected $primaryKey = "dp_id";
+    public $timestamps = false;
     protected $fillable = [
         'dp_produk_id',
         'dp_nama',

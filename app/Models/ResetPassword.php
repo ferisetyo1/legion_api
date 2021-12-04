@@ -10,6 +10,7 @@ class ResetPassword extends Model
     use HasFactory;
     protected $primaryKey = 'token';
     protected $table = 'password_resets';
+    public $timestamps = false;
     protected $fillable = [
         'email',
         'token',

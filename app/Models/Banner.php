@@ -10,6 +10,7 @@ class Banner extends Model
     use HasFactory;
     protected $primaryKey = "banner_id";
     public $table = "legion_banner";
+    public $timestamps = false;
     protected $fillable = [
         'banner_gambar',
         'banner_kategori',

@@ -10,6 +10,7 @@ class RatingReview extends Model
     use HasFactory;
     protected $primaryKey = "rr_id";
     public $table = "legion_rating_reviews";
+    public $timestamps = false;
     protected $fillable = [
         'rr_user_id',
         'rr_gym_id',

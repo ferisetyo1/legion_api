@@ -10,6 +10,7 @@ class gym extends Model
     use HasFactory;
     protected $table = "legion_gym";
     protected $primaryKey = "gym_id";
+    public $timestamps = false;
     protected $fillable = [
         'gym_user_id',
         'gym_nama',

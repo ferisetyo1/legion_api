@@ -10,6 +10,7 @@ class trainer extends Model
     use HasFactory;
     protected $primaryKey = "pt_id";
     protected $table="legion_pt";
+    public $timestamps = false;
     protected $fillable = [
         'pt_gym_id',
         'pt_user_id',
