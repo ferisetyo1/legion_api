@@ -12,7 +12,7 @@ class HargaTrainerController extends Controller
     {
         try {
             $limit = isset($_GET['limit']) ? $_GET['limit'] : 10;
-            if (HargaTrainer::where([['ht_pt_id','=',$request->ht_pt_id],['ht_kategory','=',$request->ht_kategory]])->exists()) {
+            if (HargaTrainer::where('ht_pt_id',$request->ht_pt_id)->where('ht_kategory',$request->ht_kategory)->exists()) {
                 return response()->json([
                     'status' => 'success',
                     'msg' => 'Data has already',
