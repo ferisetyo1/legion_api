@@ -27,8 +27,8 @@ class HargaTrainerController extends Controller
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'status' => 'success',
-                'msg' => 'Failed create',
+                'status' => 'error',
+                'msg' => 'Failed create '.$e->getMessage(),
                 'data' => null
             ], 400);
         }
