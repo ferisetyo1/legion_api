@@ -32,7 +32,7 @@ class ProdukController extends Controller
 
     public function show($id = 0, Request $request)
     {
-        $produk = produk::with('review')->firstWhere("produk_id", $id);
+        $produk = produk::with('review','varian','foto')->firstWhere("produk_id", $id);
         return response()->json([
             'status' => 'success',
             'msg' => "Get data successfully",

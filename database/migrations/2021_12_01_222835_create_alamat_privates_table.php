@@ -19,9 +19,9 @@ class CreateAlamatPrivatesTable extends Migration
             $table->string('ap_nama');
             $table->string('ap_type');
             $table->text('ap_alamat');
-            $table->text('ap_detail');
-            $table->text('ap_nama_penerima');
-            $table->string('ap_no_telpon');
+            $table->text('ap_detail')->nullable();
+            $table->text('ap_nama_penerima')->nullable();
+            $table->string('ap_no_telpon')->nullable();
             $table->string('ap_lat');
             $table->string('ap_lon');
             $table->dateTime("ap_create_at")->useCurrent();

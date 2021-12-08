@@ -250,7 +250,7 @@ class AuthenticationController extends Controller
             $customer->customer_gender=$request->gender;
             // $customer->save();
             $respon = [
-                'status' => 'error',
+                'status' => 'Success',
                 'msg' => 'Success update user.',
                 'data' => $user,
                 'data3'=>$customer->save()

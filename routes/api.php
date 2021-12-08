@@ -10,6 +10,7 @@ use App\Http\Controllers\HargaTrainerController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\TrainerController;
+use App\Http\Controllers\TransaksiPrivatController;
 use App\Http\Controllers\TransaksiTrainingController;
 use App\Models\HargaTrainer;
 
@@ -38,9 +39,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('logoutall',  [AuthenticationController::class, 'logoutall']);
     Route::get('user-info',  [AuthenticationController::class, 'getuserinfo']);
     Route::post('user/update/customer',  [AuthenticationController::class, 'updateprofilcustomer']);
-    Route::get('home/banner',  [TransaksiTrainingController::class, 'index']);
     Route::get('home/notificationcount',  [NotificationController::class, 'notificationcount']);
-    Route::get('home/privateberlangsung',  [TransaksiTrainingController::class, 'privateberlangsung']);
     Route::get('gyms',  [GymController::class, 'index']);
     Route::get('gyms/{id}',  [GymController::class, 'show']);
     Route::get('products',  [ProdukController::class, 'index']);
@@ -50,6 +49,10 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('trainers/add/price',  [HargaTrainerController::class, 'create']);
     Route::get('alamatprivate',  [AlamatPrivateController::class, 'index']);
     Route::post('alamatprivate/add',  [AlamatPrivateController::class, 'create']);
+    Route::post('alamatprivate/update',  [AlamatPrivateController::class, 'edit']);
+    Route::post('transaksiprivate/add',  [TransaksiPrivatController::class, 'create']);
+    Route::get('transaksiprivate',  [TransaksiPrivatController::class, 'index']);
+    Route::get('transaksiprivate/{id}',  [TransaksiPrivatController::class, 'show']);
 });
 
 Route::get("testing2", function () {

@@ -8,6 +8,7 @@ $baseDir = dirname($vendorDir);
 return array(
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
+    'App\\Http\\Controllers\\AlamatPrivateController' => $baseDir . '/app/Http/Controllers/AlamatPrivateController.php',
     'App\\Http\\Controllers\\AuthenticationController' => $baseDir . '/app/Http/Controllers/AuthenticationController.php',
     'App\\Http\\Controllers\\BannerController' => $baseDir . '/app/Http/Controllers/BannerController.php',
     'App\\Http\\Controllers\\Controller' => $baseDir . '/app/Http/Controllers/Controller.php',
@@ -40,6 +41,7 @@ return array(
     'App\\Models\\RatingReview' => $baseDir . '/app/Models/RatingReview.php',
     'App\\Models\\ResetPassword' => $baseDir . '/app/Models/ResetPassword.php',
     'App\\Models\\ReviewFoto' => $baseDir . '/app/Models/ReviewFoto.php',
+    'App\\Models\\TransaksiPrivat' => $baseDir . '/app/Models/TransaksiPrivat.php',
     'App\\Models\\User' => $baseDir . '/app/Models/User.php',
     'App\\Models\\customer' => $baseDir . '/app/Models/customer.php',
     'App\\Models\\fasilitas' => $baseDir . '/app/Models/fasilitas.php',
@@ -154,6 +156,7 @@ return array(
     'Cron\\MinutesField' => $vendorDir . '/dragonmantank/cron-expression/src/Cron/MinutesField.php',
     'Cron\\MonthField' => $vendorDir . '/dragonmantank/cron-expression/src/Cron/MonthField.php',
     'Database\\Factories\\UserFactory' => $baseDir . '/database/factories/UserFactory.php',
+    'Database\\Seeders\\AlamatPrivateSeeder' => $baseDir . '/database/seeders/AlamatPrivateSeeder.php',
     'Database\\Seeders\\BannerSeeder' => $baseDir . '/database/seeders/BannerSeeder.php',
     'Database\\Seeders\\CustomerSeeder' => $baseDir . '/database/seeders/CustomerSeeder.php',
     'Database\\Seeders\\DatabaseSeeder' => $baseDir . '/database/seeders/DatabaseSeeder.php',

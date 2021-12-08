@@ -523,6 +523,7 @@ class ComposerStaticInitba6498eed74fd2c534c176963dd77e0f
     public static $classMap = array (
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
+        'App\\Http\\Controllers\\AlamatPrivateController' => __DIR__ . '/../..' . '/app/Http/Controllers/AlamatPrivateController.php',
         'App\\Http\\Controllers\\AuthenticationController' => __DIR__ . '/../..' . '/app/Http/Controllers/AuthenticationController.php',
         'App\\Http\\Controllers\\BannerController' => __DIR__ . '/../..' . '/app/Http/Controllers/BannerController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
@@ -555,6 +556,7 @@ class ComposerStaticInitba6498eed74fd2c534c176963dd77e0f
         'App\\Models\\RatingReview' => __DIR__ . '/../..' . '/app/Models/RatingReview.php',
         'App\\Models\\ResetPassword' => __DIR__ . '/../..' . '/app/Models/ResetPassword.php',
         'App\\Models\\ReviewFoto' => __DIR__ . '/../..' . '/app/Models/ReviewFoto.php',
+        'App\\Models\\TransaksiPrivat' => __DIR__ . '/../..' . '/app/Models/TransaksiPrivat.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',
         'App\\Models\\customer' => __DIR__ . '/../..' . '/app/Models/customer.php',
         'App\\Models\\fasilitas' => __DIR__ . '/../..' . '/app/Models/fasilitas.php',
@@ -669,6 +671,7 @@ class ComposerStaticInitba6498eed74fd2c534c176963dd77e0f
         'Cron\\MinutesField' => __DIR__ . '/..' . '/dragonmantank/cron-expression/src/Cron/MinutesField.php',
         'Cron\\MonthField' => __DIR__ . '/..' . '/dragonmantank/cron-expression/src/Cron/MonthField.php',
         'Database\\Factories\\UserFactory' => __DIR__ . '/../..' . '/database/factories/UserFactory.php',
+        'Database\\Seeders\\AlamatPrivateSeeder' => __DIR__ . '/../..' . '/database/seeders/AlamatPrivateSeeder.php',
         'Database\\Seeders\\BannerSeeder' => __DIR__ . '/../..' . '/database/seeders/BannerSeeder.php',
         'Database\\Seeders\\CustomerSeeder' => __DIR__ . '/../..' . '/database/seeders/CustomerSeeder.php',
         'Database\\Seeders\\DatabaseSeeder' => __DIR__ . '/../..' . '/database/seeders/DatabaseSeeder.php',
