@@ -22,9 +22,12 @@ class CreateTransaksiPrivatsTable extends Migration
             $table->string('tp_tgl_private');
             $table->string('tp_jam_private');
             $table->string('tp_nama_gym')->nullable();
-            $table->string('tp_status');
             $table->string('tp_metode_pembayaran');
             $table->string('tp_waktu_expired');
+            $table->boolean('tp_is_paid')->nullable();
+            $table->boolean('tp_is_confirm')->nullable();
+            $table->boolean('tp_is_cancel')->nullable();
+            $table->boolean('tp_is_done')->nullable();
             $table->dateTime("ap_create_at")->useCurrent();
             $table->dateTime("ap_update_at")->useCurrent()->useCurrentOnUpdate();
         });

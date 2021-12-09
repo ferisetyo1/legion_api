@@ -20,10 +20,14 @@ class TransaksiPrivat extends Model
         'tp_tgl_private',
         'tp_jam_private',
         'tp_nama_gym',
-        'tp_status',
+        'tp_is_paid',
+        'tp_is_confirm',
+        'tp_is_cancel',
         'tp_metode_pembayaran',
         'tp_waktu_expired'
     ];
+
+    protected $appends = ["tp_status"];
 
     public function trainer()
     {
@@ -48,14 +52,38 @@ class TransaksiPrivat extends Model
     4 = dibatalkan
     5 = selesai
     */
-    public function getTpStatusAttribute($s)
+    public function getTpStatusAttribute()
     {
-        if (Date("d M Y H:i")>=Date($this->tp_tgl_private." ".$this->tp_jam_private)&&Date("d M Y H:i")<=Date('d M Y H:i',strtotime($this->tp_tgl_private." ".$this->tp_jam_private.' + 1 hours'))) {
-            return 3;
+        if ($this->tp_is_done) {
+            return [
+                "text"=>"Selesai",
+                "color"=>"#55D85A"
+            ];
         }
-        if ( $s!=4 &&Date('d M Y H:i',strtotime($this->tp_tgl_private." ".$this->tp_jam_private.' + 1 hours')) < Date("d M Y H:i")) {
-            return 5;
+
+        if ($this->tp_is_cancel) {
+            return [
+                "text"=>"Dibatalkan",
+                "color"=>"#FF5757"
+            ];
         }
-        return $s;
+
+        if ($this->tp_is_confirm) {
+            return [
+                "text"=>"Dikonfirmasi",
+                "color"=>"#FFBA49"
+            ];
+        }
+
+        if ($this->tp_is_paid) {
+            return [
+                "text"=>"Menunggu Konfirmasi",
+                "color"=>"#FFBA49"
+            ];
+        }
+        return [
+            "text"=>"Menunggu Pembayaran",
+            "color"=>"#FFBA49"
+        ];
     }
 }

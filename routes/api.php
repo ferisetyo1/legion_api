@@ -52,6 +52,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('alamatprivate/update',  [AlamatPrivateController::class, 'edit']);
     Route::post('transaksiprivate/add',  [TransaksiPrivatController::class, 'create']);
     Route::get('transaksiprivate',  [TransaksiPrivatController::class, 'index']);
+    Route::get('transaksiprivate/verify',  [TransaksiPrivatController::class, 'verify']);
     Route::get('transaksiprivate/{id}',  [TransaksiPrivatController::class, 'show']);
 });
 
