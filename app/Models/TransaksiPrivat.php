@@ -13,6 +13,7 @@ class TransaksiPrivat extends Model
     protected $table="legion_transaksi_privat";
     public $timestamps = false;
     protected $fillable = [
+        'tp_user_id',
         'tp_pt_id',
         'tp_ht_id',
         'tp_ap_id',
@@ -23,11 +24,13 @@ class TransaksiPrivat extends Model
         'tp_is_paid',
         'tp_is_confirm',
         'tp_is_cancel',
+        'tp_is_done',
         'tp_metode_pembayaran',
-        'tp_waktu_expired'
+        'tp_waktu_expired',
+        'tp_generate_url'
     ];
 
-    protected $appends = ["tp_status"];
+    protected $appends = ["tp_status","tp_jam_private_end"];
 
     public function trainer()
     {
@@ -42,6 +45,12 @@ class TransaksiPrivat extends Model
     public function alamatprivate()
     {
         return $this->belongsTo(AlamatPrivate::class,'tp_ap_id','ap_id');
+    }
+
+    public function getTpJamPrivateEndAttribute()
+    {
+        $ht=HargaTrainer::find($this->tp_ht_id);
+        return date('H:i', strtotime(Date($this->tp_jam_private) . ' ' . '+ '.$ht->ht_waktu.' minutes'));
     }
 
     /*

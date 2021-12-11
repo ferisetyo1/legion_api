@@ -9,6 +9,7 @@ use App\Http\Controllers\GymController;
 use App\Http\Controllers\HargaTrainerController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProdukController;
+use App\Http\Controllers\ProdukKategoriController;
 use App\Http\Controllers\TrainerController;
 use App\Http\Controllers\TransaksiPrivatController;
 use App\Http\Controllers\TransaksiTrainingController;
@@ -43,6 +44,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('gyms',  [GymController::class, 'index']);
     Route::get('gyms/{id}',  [GymController::class, 'show']);
     Route::get('products',  [ProdukController::class, 'index']);
+    Route::get('products/kategori',  [ProdukKategoriController::class, 'index']);
     Route::get('products/{id}',  [ProdukController::class, 'show']);
     Route::get('trainers',  [TrainerController::class, 'index']);
     Route::get('trainers/{id}',  [TrainerController::class, 'show']);

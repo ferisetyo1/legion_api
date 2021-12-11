@@ -15,6 +15,7 @@ class CreateTransaksiPrivatsTable extends Migration
     {
         Schema::create('legion_transaksi_privat', function (Blueprint $table) {
             $table->id('tp_id');
+            $table->integer('tp_user_id');
             $table->integer('tp_pt_id');
             $table->integer('tp_ht_id');
             $table->integer('tp_ap_id')->nullable();
@@ -28,6 +29,7 @@ class CreateTransaksiPrivatsTable extends Migration
             $table->boolean('tp_is_confirm')->nullable();
             $table->boolean('tp_is_cancel')->nullable();
             $table->boolean('tp_is_done')->nullable();
+            $table->text('tp_generate_url')->nullable();
             $table->dateTime("ap_create_at")->useCurrent();
             $table->dateTime("ap_update_at")->useCurrent()->useCurrentOnUpdate();
         });

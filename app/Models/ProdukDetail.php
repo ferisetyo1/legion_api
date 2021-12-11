@@ -18,4 +18,9 @@ class ProdukDetail extends Model
         'dp_harga',
         'dp_stok',
     ];
+    protected $appends = ["dp_harga_after_discount"];
+    public function getDpHargaAfterDiscountAttribute()
+    {
+        return $this->dp_harga-(($this->dp_harga*$this->dp_discount)/100);
+    }
 }

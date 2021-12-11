@@ -22,5 +22,11 @@ class DatabaseSeeder extends Seeder
         $this->call(TrainerSeeder::class);
         $this->call(RatingReviewSeeder::class);
         $this->call(FasilitasSeeder::class);
+        $this->call(AlamatPrivateSeeder::class);
+        $this->call(HargaTrainerSeeder::class);
+        $this->call(ProdukDetailSeeder::class);
+        $this->call(ProdukFotoSeeder::class);
+        $this->call(ProdukKategoriSeeder::class);
+        $this->call(ProdukTipeSeeder::class);
     }
 }

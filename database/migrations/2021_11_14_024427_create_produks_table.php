@@ -15,8 +15,9 @@ class CreateProduksTable extends Migration
     {
         Schema::create('legion_produk', function (Blueprint $table) {
             $table->id("produk_id");
+            $table->integer("produk_pt_id");
+            $table->integer("produk_pk_id");
             $table->string("produk_nama");
-            $table->string("produk_kategori");
             $table->string("produk_merk");
             $table->string("produk_berat");
             $table->string("produk_origin");

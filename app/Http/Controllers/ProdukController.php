@@ -14,6 +14,9 @@ class ProdukController extends Controller
         if (isset($_GET['except'])) {
             $produk = $produk->where("produk_id", "!=", $_GET['except']);
         }
+        if (isset($_GET['kategori'])&&$_GET['kategori']!='') {
+            $produk = $produk->where("produk_pk_id", $_GET['kategori']);
+        }
         if (isset($_GET["query"])) {
             $produk = $produk->where("produk_nama", "like", "%" . $_GET['query'] . "%");
         }
@@ -32,14 +35,11 @@ class ProdukController extends Controller
 
     public function show($id = 0, Request $request)
     {
-        $produk = produk::with('review','varian','foto')->firstWhere("produk_id", $id);
+        $produk = produk::with('ProdukReview','ProdukVarian','ProdukFoto')->firstWhere("produk_id", $id);
         return response()->json([
             'status' => 'success',
             'msg' => "Get data successfully",
-            'data' => [
-                'produk' => $produk,
-                'ongkir' => []
-            ]
+            'data' => $produk
         ], 200);
     }
 }

@@ -13,7 +13,8 @@ class produk extends Model
     public $timestamps = false;
     protected $fillable = [
         'produk_nama',
-        'produk_kategori',
+        'produk_pk_id',
+        'produk_pt_id',
         'produk_merk',
         'produk_berat',
         'produk_origin',
@@ -24,7 +25,7 @@ class produk extends Model
         'produk_stok',
     ];
 
-    protected $appends = ["produk_star_count"];
+    protected $appends = ["produk_star_count","produk_pk_nama","produk_pt_nama","produk_default_variant","produk_default_foto"];
 
     public function getProdukStarCountAttribute()
     {
@@ -39,18 +40,44 @@ class produk extends Model
         else return 0;
     }
 
-    public function review()
+    public function getProdukDefaultFotoAttribute()
+    {
+        return ProdukFoto::firstWhere("fp_produk_id",$this->produk_id);
+    }
+
+    public function getProdukDefaultVariantAttribute()
+    {
+        return ProdukDetail::firstWhere("dp_produk_id",$this->produk_id);
+    }
+
+    public function ProdukReview()
     {
         return  $this->hasMany(RatingReview::class,"rr_produk_id","produk_id")->take(2);
     }
     
-    public function foto()
+    public function ProdukFoto()
     {
         return  $this->hasMany(ProdukFoto::class,"fp_produk_id","produk_id")->take(10);
     }
     
-    public function varian()
+    public function ProdukVarian()
     {
         return  $this->hasMany(ProdukDetail::class,"dp_produk_id","produk_id");
+    }
+
+    public function getProdukPkNamaAttribute(){
+        $pk=ProdukKategori::find($this->produk_pk_id);
+        if ($pk!=null) {
+            return $pk->pk_nama;
+        }
+        return "";
+    }
+    
+    public function getProdukPtNamaAttribute(){
+        $pt=ProdukTipe::find($this->produk_pt_id);
+        if ($pt!=null) {
+            return $pt->pt_nama;
+        }
+        return "";
     }
 }
