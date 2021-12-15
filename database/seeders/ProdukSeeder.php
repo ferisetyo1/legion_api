@@ -21,7 +21,7 @@ class ProdukSeeder extends Seeder
                 'produk_pk_id' => 1,
                 'produk_pt_id' => 1,
                 'produk_merk' => "The Legion PRE BCAAs",
-                'produk_berat' => "45 Kilogram",
+                'produk_berat' => "45",
                 'produk_origin' => "Impor",
                 'produk_detail' => "Sepeda Statis Air Bike versi OB-6401, Sepeda ini dibekali fasilitas untuk mendeteksi jumlah kecepatan, waktu, kalori yang dibakar, jarak tempuh, detak jantung pada saat berolahraga. Bukan hanya itu, Air-Bike juga mudah disimpan di ruangan yang sempit dan memberikan energik juga tantangan dalam berolahraga sepeda.",
             ],
@@ -35,7 +35,7 @@ class ProdukSeeder extends Seeder
                 'produk_pk_id' => rand(1,30),
                 'produk_pt_id' => rand(1,30),
                 'produk_merk' => "The Legion PRE BCAAs",
-                'produk_berat' => "45 Kilogram",
+                'produk_berat' => "45",
                 'produk_origin' => "Impor",
                 'produk_detail' => "Sepeda Statis Air Bike versi OB-6401, Sepeda ini dibekali fasilitas untuk mendeteksi jumlah kecepatan, waktu, kalori yang dibakar, jarak tempuh, detak jantung pada saat berolahraga. Bukan hanya itu, Air-Bike juga mudah disimpan di ruangan yang sempit dan memberikan energik juga tantangan dalam berolahraga sepeda.",
             ]);

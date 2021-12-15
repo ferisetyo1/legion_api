@@ -5,14 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class AlamatPrivate extends Model
+class AlamatPengiriman extends Model
 {
     use HasFactory;
     protected $primaryKey = "ap_id";
-    public $table = "legion_alamat_privates";
+    public $table = "legion_alamat_pengiriman";
     public $timestamps = false;
     protected $fillable = [
         'ap_user_id',
+        "ap_prov_id",
+        "ap_prov_nama",
+        "ap_kota_id",
+        "ap_kota_nama",
+        // "ap_kecamatan_id",
+        // "ap_kecamatan_nama",
         'ap_nama',
         'ap_type',
         'ap_alamat',
@@ -31,7 +37,6 @@ class AlamatPrivate extends Model
         if ($this->ap_type=="kantor") {
             return "Kantor";
         }
-        
         return ucwords($s);
     }
     
@@ -44,4 +49,5 @@ class AlamatPrivate extends Model
     {
         return ucwords($s);
     }
+
 }

@@ -275,4 +275,13 @@ uDl3e11e6es212d2FvVhFntO1lFGjvB8e2GcWZ0XpKSsAUhm1B4=
             'data' => $transaksi == null
         ], 200);
     }
+
+    public function counter(Request $request)
+    {
+        return response()->json([
+            'status' => 'success',
+            'msg' => "Get data successfully",
+            'data' => TransaksiPrivat::where('tp_user_id', $request->user()->id)->count()
+        ], 200);
+    }
 }

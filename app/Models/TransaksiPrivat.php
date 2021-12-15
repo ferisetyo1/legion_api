@@ -95,4 +95,11 @@ class TransaksiPrivat extends Model
             "color"=>"#FFBA49"
         ];
     }
+
+    protected $casts = [
+        'tp_is_paid' => 'boolean',
+        'tp_is_cancel' => 'boolean',
+        'tp_is_done' => 'boolean',
+        'tp_is_confirm' => 'boolean',
+    ];
 }
