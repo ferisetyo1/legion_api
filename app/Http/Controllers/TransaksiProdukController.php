@@ -200,8 +200,17 @@ class TransaksiProdukController extends Controller
     {
         return response()->json([
             'status' => 'success',
-            'msg' => "Updated data successfully",
+            'msg' => "Get data successfully",
             'data' => TransaksiProduk::with('tpCart.ctVarian','tpCart.ctProduk', 'tpAlamatPengiriman')->find($id),
+        ], 200);
+    }
+
+    public function counter()
+    {
+        return response()->json([
+            'status' => 'success',
+            'msg' => "Updated data successfully",
+            'data' => TransaksiProduk::where('tp_user_id',auth()->user()->id)->count()
         ], 200);
     }
 

@@ -78,6 +78,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get("transaksiproduk",[TransaksiProdukController::class,"index"]);
     Route::post("transaksiproduk/add",[TransaksiProdukController::class,"create"]);
     Route::get("transaksiproduk/show/{id}",[TransaksiProdukController::class,"show"]);
+    Route::get("transaksiproduk/counter",[TransaksiProdukController::class,"counter"]);
     Route::get("wishproduk",[WishlistProdukController::class,"index"]);
     Route::get("wishproduk/wishes/{prodid}",[WishlistProdukController::class,"wish"]);
     Route::get("wishproduk/prodlistwish/{prodid}",[WishlistProdukController::class,"produklistwish"]);
