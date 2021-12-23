@@ -25,7 +25,7 @@ class produk extends Model
         'produk_stok',
     ];
 
-    protected $appends = ["produk_star_count","produk_pk_nama","produk_pt_nama","produk_default_variant","produk_default_foto"];
+    protected $appends = ["produk_star_count","produk_pk_nama","produk_pt_nama","produk_default_variant","produk_default_foto","produk_wishlist"];
 
     public function getProdukStarCountAttribute()
     {
@@ -63,6 +63,11 @@ class produk extends Model
     public function ProdukVarian()
     {
         return  $this->hasMany(ProdukDetail::class,"dp_produk_id","produk_id");
+    }
+
+    public function getProdukWishlistAttribute()
+    {
+        return WishlistProduk::where('wp_user_id',auth()->user()->id)->where('wp_produk_id',$this->produk_id)->first();
     }
 
     public function getProdukPkNamaAttribute(){

@@ -181,6 +181,7 @@ class AlamatPengirimanController extends Controller
                 'regular' => $regular
             ]
         ], 200);
+
     }
 
     function do_curl($link, $data = null, $header = null, $location = false)

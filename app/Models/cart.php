@@ -18,7 +18,7 @@ class cart extends Model
         'cart_jumlah',
     ];
 
-    protected $appends = ["cart_harga"];
+    protected $appends = ["cart_harga","cart_berat"];
 
     public function cartProduk()
     {
@@ -33,5 +33,10 @@ class cart extends Model
     public function getCartHargaAttribute()
     {
         return $this->cartVarian->dp_harga_after_discount*$this->cart_jumlah;
+    }
+    
+    public function getcartBeratAttribute()
+    {
+        return $this->cartProduk->produk_berat*$this->cart_jumlah;
     }
 }

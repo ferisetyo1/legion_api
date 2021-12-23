@@ -14,9 +14,12 @@ use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\ProdukKategoriController;
 use App\Http\Controllers\TrainerController;
 use App\Http\Controllers\TransaksiPrivatController;
+use App\Http\Controllers\TransaksiProdukController;
 use App\Http\Controllers\TransaksiTrainingController;
+use App\Http\Controllers\WishlistProdukController;
 use App\Models\AlamatPengiriman;
 use App\Models\HargaTrainer;
+use App\Models\TransaksiProduk;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +41,7 @@ Route::post('login', [AuthenticationController::class, 'login']);
 Route::post('login/google', [AuthenticationController::class, 'logingoogle']);
 Route::post('register/customer', [AuthenticationController::class, 'registercustomer']);
 Route::post('password/reset/request', [AuthenticationController::class, 'requestreset']);
+Route::get("transaksiproduk/paid/{inv}",[TransaksiProdukController::class,"paidTransaksi"]);
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('logout', [AuthenticationController::class, 'logout']);
     Route::post('logoutall',  [AuthenticationController::class, 'logoutall']);
@@ -70,6 +74,14 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('cart/add',  [CartController::class, 'create']);
     Route::post('cart/edit',  [CartController::class, 'update']);
     Route::post('cart/delete',  [CartController::class, 'delete']);
+    Route::post("info/checkout",[TransaksiProdukController::class,"infocheckout"]);
+    Route::get("transaksiproduk",[TransaksiProdukController::class,"index"]);
+    Route::post("transaksiproduk/add",[TransaksiProdukController::class,"create"]);
+    Route::get("transaksiproduk/show/{id}",[TransaksiProdukController::class,"show"]);
+    Route::get("wishproduk",[WishlistProdukController::class,"index"]);
+    Route::get("wishproduk/wishes/{prodid}",[WishlistProdukController::class,"wish"]);
+    Route::get("wishproduk/prodlistwish/{prodid}",[WishlistProdukController::class,"produklistwish"]);
+    Route::get("wishproduk/counter",[WishlistProdukController::class,"counter"]);
 });
 
 Route::get('/', function () {
