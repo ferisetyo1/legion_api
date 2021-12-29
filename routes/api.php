@@ -9,6 +9,7 @@ use App\Http\Controllers\BannerController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\GymController;
 use App\Http\Controllers\HargaTrainerController;
+use App\Http\Controllers\JadwalTrainerController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\ProdukKategoriController;
@@ -83,6 +84,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get("wishproduk/wishes/{prodid}",[WishlistProdukController::class,"wish"]);
     Route::get("wishproduk/prodlistwish/{prodid}",[WishlistProdukController::class,"produklistwish"]);
     Route::get("wishproduk/counter",[WishlistProdukController::class,"counter"]);
+    Route::get("jadwal",[JadwalTrainerController::class,"index"]);
 });
 
 Route::get('/', function () {

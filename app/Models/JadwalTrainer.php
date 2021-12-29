@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\KategoriesjadwalTrainer;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -20,4 +21,7 @@ class JadwalTrainer extends Model
         'jt_kategories',
     ];
     
+    protected $casts = [
+        'jt_kategories' => KategoriesjadwalTrainer::class,
+    ];
 }
