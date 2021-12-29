@@ -134,8 +134,8 @@ class TransaksiProdukController extends Controller
         $data["tp_user_id"] = $request->user()->id;
         $generateUrl = $this->generateUrl([
             'inv' => $data["tp_token_payment"],
-            'amount' => $data['tp_ongkir'] + $cart->get()->sum('cart_harga'),
-            // 'amount' => 1,
+            // 'amount' => $data['tp_ongkir'] + $cart->get()->sum('cart_harga'),
+            'amount' => 1,
         ]);
         $data["tp_checkout_url"] = isset($generateUrl['generatedUrl']) ? $generateUrl['generatedUrl'] : '';
         $data["tp_tgl_expired_payment"] = Date("y-m-d h:i:s", strtotime(isset($generateUrl['expiredDate']) ? $generateUrl['expiredDate'] : ''));

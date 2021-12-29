@@ -15,22 +15,22 @@ class HargaTrainer extends Model
         'ht_pt_id',
         'ht_harga',
         'ht_waktu',
-        'ht_kategory'
+        'ht_kht_id'
     ];
-    protected $appends = ["ht_kategory_name"];
+    // protected $appends = ["ht_kategory_name"];
 
-    public function getHtKategoryNameAttribute()
-    {
-        if ($this->ht_kategory==1) {
-            return "Online (Zoom)";
-        }
-        if ($this->ht_kategory==2) {
-            return "Offline (Di Tempat Gym)";
-        }
-        if ($this->ht_kategory==3) {
-            return "Offline (By Request)";
-        }
-        return "";
-    }
+    // public function getHtKategoryNameAttribute()
+    // {
+    //     if ($this->ht_kategory==1) {
+    //         return "Online (Zoom)";
+    //     }
+    //     if ($this->ht_kategory==2) {
+    //         return "Offline (Di Tempat Gym)";
+    //     }
+    //     if ($this->ht_kategory==3) {
+    //         return "Offline (By Request)";
+    //     }
+    //     return "";
+    // }
 
 }

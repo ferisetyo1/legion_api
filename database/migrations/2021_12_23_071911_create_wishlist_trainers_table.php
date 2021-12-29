@@ -13,9 +13,9 @@ class CreateWishlistTrainersTable extends Migration
      */
     public function up()
     {
-        Schema::create('wishlist_trainers', function (Blueprint $table) {
+        Schema::create('legion_wishlist_trainers', function (Blueprint $table) {
             $table->id('wt_id');
-            $table->integer('wt_trainer_id');
+            $table->integer('wt_pt_id');
             $table->integer('wt_user_id');
             $table->dateTime("wt_create_at")->useCurrent();
             $table->dateTime("wt_update_at")->useCurrent()->useCurrentOnUpdate();
@@ -29,6 +29,6 @@ class CreateWishlistTrainersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('wishlist_trainers');
+        Schema::dropIfExists('legion_wishlist_trainers');
     }
 }

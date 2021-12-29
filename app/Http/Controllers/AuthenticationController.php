@@ -21,7 +21,7 @@ use Illuminate\Support\Str;
 
 class AuthenticationController extends Controller
 {
-    public function login(Request $request)
+    public function login($role,Request $request)
     {
         $validate = Validator::make($request->all(), [
             'email' => 'required',
@@ -46,7 +46,7 @@ class AuthenticationController extends Controller
                 return response()->json($respon, 401);
             }
 
-            $user = User::where('email', $request->email)->first();
+            $user = User::where('email', $request->email)->where('role',$role)->first();
             if (!Hash::check($request->password, $user->password, [])) {
                 throw new \Exception('Error in Login');
             }
@@ -64,7 +64,7 @@ class AuthenticationController extends Controller
         }
     }
 
-    public function logingoogle(Request $request)
+    public function logingoogle($role,Request $request)
     {
         $validate = Validator::make($request->all(), [
             'email' => 'required'
@@ -77,7 +77,7 @@ class AuthenticationController extends Controller
             ];
             return response()->json($respon, 200);
         } else {
-            $user = User::where('email', $request->email)->first();
+            $user = User::where('email', $request->email)->where('role',$role)->first();
             if ($user == null) {
                 $respon = [
                     'status' => 'error',

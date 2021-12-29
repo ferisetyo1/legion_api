@@ -18,7 +18,7 @@ class CreateHargaTrainersTable extends Migration
             $table->integer('ht_pt_id');
             $table->integer('ht_harga');
             $table->integer('ht_waktu');
-            $table->integer('ht_kategory');
+            $table->integer('ht_kht_id');
             $table->dateTime("ht_create_at")->useCurrent();
             $table->dateTime("ht_update_at")->useCurrent()->useCurrentOnUpdate();
         });

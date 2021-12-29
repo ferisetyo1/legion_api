@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\FotoGym;
 use App\Models\gym;
 use App\Models\trainer;
 use App\Models\User;
@@ -22,17 +23,30 @@ class GymSeeder extends Seeder
     {
         $user = User::firstWhere('email', 'gymadmin@gmail.com');
         $faker = Faker::create('id_ID');
-        gym::insert([
+        $gyms = gym::create([
             'gym_user_id' => $user->id,
             'gym_nama' => "The Legion Gym",
             'gym_alamat' => "Malang kota",
             'gym_longitude' => 112.6196781,
-            'gym_latitude' => -7.9680568 ,
+            'gym_latitude' => -7.9680568,
             'gym_isActive' => "active",
             'gym_status' => "0",
             'gym_desc' => $faker->paragraph,
-            'gym_image' => $faker->imageUrl(300, 300, 'cats'),
             'gym_kota' => "malang",
+        ]);
+        FotoGym::insert([
+            [
+                'fg_gym_id' => $gyms->gym_id,
+                'fg_image_url' => $faker->imageUrl(300, 300, 'cats'),
+            ],
+            [
+                'fg_gym_id' => $gyms->gym_id,
+                'fg_image_url' => $faker->imageUrl(300, 300, 'cats'),
+            ],
+            [
+                'fg_gym_id' => $gyms->gym_id,
+                'fg_image_url' => $faker->imageUrl(300, 300, 'cats'),
+            ],
         ]);
         for ($i = 0; $i < 100; $i++) {
             $user = User::insert([
@@ -40,7 +54,7 @@ class GymSeeder extends Seeder
                 'name' => $faker->name,
                 'password' => Hash::make('12345678'),
                 'role' => 'gym',
-                'foto' => $faker->imageUrl(300,300,'person'),
+                'foto' => $faker->imageUrl(300, 300, 'person'),
             ],);
             gym::insert([
                 'gym_user_id' => DB::getPdo()->lastInsertId(),
@@ -51,10 +65,23 @@ class GymSeeder extends Seeder
                 'gym_isActive' => "active",
                 'gym_status' => "0",
                 'gym_desc' => $faker->paragraph,
-                'gym_image' => $faker->imageUrl(300, 300, 'cats'),
                 'gym_kota' => "malang",
             ]);
             $gymid = DB::getPdo()->lastInsertId();
+            FotoGym::insert([
+                [
+                    'fg_gym_id' => $gymid,
+                    'fg_image_url' => $faker->imageUrl(300, 300, 'cats'),
+                ],
+                [
+                    'fg_gym_id' => $gymid,
+                    'fg_image_url' => $faker->imageUrl(300, 300, 'cats'),
+                ],
+                [
+                    'fg_gym_id' => $gymid,
+                    'fg_image_url' => $faker->imageUrl(300, 300, 'cats'),
+                ],
+            ]);
             for ($j = 0; $j < 2; $j++) {
                 $name = $faker->name;
                 $user = User::insert([
@@ -62,7 +89,7 @@ class GymSeeder extends Seeder
                     'name' => $name,
                     'password' => Hash::make('12345678'),
                     'role' => 'trainer',
-                    'foto' => $faker->imageUrl(300,300,'person'),
+                    'foto' => $faker->imageUrl(300, 300, 'person'),
                 ],);
                 trainer::insert([
                     'pt_gym_id' => $gymid,

@@ -53,4 +53,9 @@ class trainer extends Model
     {
         return  $this->belongsTo(gym::class,"pt_gym_id","gym_id");
     }
+
+    public function getPtNamaAttribute($s)
+    {
+        return ucwords($s);
+    }
 }

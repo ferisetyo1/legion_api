@@ -20,10 +20,9 @@ class gym extends Model
         'gym_isActive',
         'gym_status',
         'gym_desc',
-        'gym_image',
     ];
 
-    protected $appends = ["gym_star_count"];
+    protected $appends = ["gym_star_count","gym_image"];
 
     public function getGymStarCountAttribute()
     {
@@ -51,5 +50,19 @@ class gym extends Model
     public function fasilitas()
     {
         return  $this->hasMany(fasilitas::class, "gf_gym_id", "gym_id");
+    }
+    
+    public function foto()
+    {
+        return  $this->hasMany(FotoGym::class, "fg_gym_id", "gym_id");
+    }
+
+    public function getGymImageAttribute()
+    {
+        $foto= FotoGym::firstwhere("fg_gym_id",$this->gym_id);
+        if ($foto!=null) {
+            return $foto->fg_image_url;
+        }
+        return null;
     }
 }

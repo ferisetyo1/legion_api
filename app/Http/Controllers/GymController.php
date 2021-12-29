@@ -44,7 +44,7 @@ class GymController extends Controller
         return response()->json([
             'status' => 'success',
             'msg' => "Get data successfully",
-            'data' =>  gym::with("trainer", "review","fasilitas")->firstWhere('gym_id', $id)
+            'data' =>  gym::with("trainer", "review","fasilitas","foto")->firstWhere('gym_id', $id)
         ], 200);
     }
 }

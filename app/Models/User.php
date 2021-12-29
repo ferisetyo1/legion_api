@@ -72,4 +72,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(customer::class,'customer_user_id');
     }
+
+    public function getNameAttribute($s)
+    {
+        return ucwords($s);
+    }
 }
