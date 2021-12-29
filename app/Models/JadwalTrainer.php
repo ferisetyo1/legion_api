@@ -24,4 +24,9 @@ class JadwalTrainer extends Model
     protected $casts = [
         'jt_kategories' => KategoriesjadwalTrainer::class,
     ];
+
+    public function getJtHariAttribute($s)
+    {
+        return ucwords($s);
+    }
 }
