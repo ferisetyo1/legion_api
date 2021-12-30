@@ -521,6 +521,7 @@ class ComposerStaticInitba6498eed74fd2c534c176963dd77e0f
     );
 
     public static $classMap = array (
+        'App\\Casts\\KategoriesjadwalTrainer' => __DIR__ . '/../..' . '/app/Casts/KategoriesjadwalTrainer.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
         'App\\Http\\Controllers\\AlamatPengirimanController' => __DIR__ . '/../..' . '/app/Http/Controllers/AlamatPengirimanController.php',
@@ -563,10 +564,10 @@ class ComposerStaticInitba6498eed74fd2c534c176963dd77e0f
         'App\\Models\\AlamatPrivate' => __DIR__ . '/../..' . '/app/Models/AlamatPrivate.php',
         'App\\Models\\Banner' => __DIR__ . '/../..' . '/app/Models/Banner.php',
         'App\\Models\\CartTemp' => __DIR__ . '/../..' . '/app/Models/CartTemp.php',
+        'App\\Models\\DataMaster' => __DIR__ . '/../..' . '/app/Models/DataMaster.php',
         'App\\Models\\FotoGym' => __DIR__ . '/../..' . '/app/Models/FotoGym.php',
         'App\\Models\\HargaTrainer' => __DIR__ . '/../..' . '/app/Models/HargaTrainer.php',
         'App\\Models\\JadwalTrainer' => __DIR__ . '/../..' . '/app/Models/JadwalTrainer.php',
-        'App\\Models\\JadwalTrainerDetail' => __DIR__ . '/../..' . '/app/Models/JadwalTrainerDetail.php',
         'App\\Models\\KategoriHargaTrainer' => __DIR__ . '/../..' . '/app/Models/KategoriHargaTrainer.php',
         'App\\Models\\ProdukDetail' => __DIR__ . '/../..' . '/app/Models/ProdukDetail.php',
         'App\\Models\\ProdukFoto' => __DIR__ . '/../..' . '/app/Models/ProdukFoto.php',

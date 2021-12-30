@@ -232,4 +232,29 @@ return [
 
     ],
 
+    'datamaster' => [
+        'syaratketentuan' => [
+            'key' => 'SYARAT_DAN_KETENTUAN',
+            'default' => json_encode([
+                'judul' => 'Syarat & Ketentuan',
+                'deskripsi' => 'Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed posuere egestas nunc ut tempus. Fusce sagittis bibendum est. Pellentesque eu tortor euismod, varius odio ac, auctor arcu. Nam mauris neque, dictum ac velit ut, ultricies efficitur sapien. Vestibulum in velit in elit pharetra commodo ac vel justo. Nulla facilisi. Praesent aliquet lorem dolor, vitae sodales felis sodales eu. Aenean semper mi vitae urna luctus, luctus auctor lacus eleifend. Pellentesque id mauris non neque dapibus pretium eu eu neque. Praesent dictum justo erat, ac rutrum tellus feugiat at.'
+            ])
+        ],
+        'kebijakan_privasi' => [
+            'key' => 'KEBIJAKAN_PRIVASI',
+            'default' => json_encode([
+                'judul' => 'Kebijakan Privasi',
+                'deskripsi' => 'Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed posuere egestas nunc ut tempus. Fusce sagittis bibendum est. Pellentesque eu tortor euismod, varius odio ac, auctor arcu. Nam mauris neque, dictum ac velit ut, ultricies efficitur sapien. Vestibulum in velit in elit pharetra commodo ac vel justo. Nulla facilisi. Praesent aliquet lorem dolor, vitae sodales felis sodales eu. Aenean semper mi vitae urna luctus, luctus auctor lacus eleifend. Pellentesque id mauris non neque dapibus pretium eu eu neque. Praesent dictum justo erat, ac rutrum tellus feugiat at.'
+            ])
+        ],
+        'tentang' => [
+            'key' => 'TENTANG_APLIKASI',
+            'default' => json_encode([
+                'judul' => 'The Legion Gym',
+                'deskripsi' => 'Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed posuere egestas nunc ut tempus. Fusce sagittis bibendum est. Pellentesque eu tortor euismod, varius odio ac, auctor arcu. Nam mauris neque, dictum ac velit ut, ultricies efficitur sapien. Vestibulum in velit in elit pharetra commodo ac vel justo. Nulla facilisi. Praesent aliquet lorem dolor, vitae sodales felis sodales eu. Aenean semper mi vitae urna luctus, luctus auctor lacus eleifend. Pellentesque id mauris non neque dapibus pretium eu eu neque. Praesent dictum justo erat, ac rutrum tellus feugiat at.',
+                'image' => 'https://nutrition.thelegion.co.id/images/logo.png'
+            ])
+        ]
+    ]
+
 ];

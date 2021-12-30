@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'App\\Casts\\KategoriesjadwalTrainer' => $baseDir . '/app/Casts/KategoriesjadwalTrainer.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
     'App\\Http\\Controllers\\AlamatPengirimanController' => $baseDir . '/app/Http/Controllers/AlamatPengirimanController.php',
@@ -48,10 +49,10 @@ return array(
     'App\\Models\\AlamatPrivate' => $baseDir . '/app/Models/AlamatPrivate.php',
     'App\\Models\\Banner' => $baseDir . '/app/Models/Banner.php',
     'App\\Models\\CartTemp' => $baseDir . '/app/Models/CartTemp.php',
+    'App\\Models\\DataMaster' => $baseDir . '/app/Models/DataMaster.php',
     'App\\Models\\FotoGym' => $baseDir . '/app/Models/FotoGym.php',
     'App\\Models\\HargaTrainer' => $baseDir . '/app/Models/HargaTrainer.php',
     'App\\Models\\JadwalTrainer' => $baseDir . '/app/Models/JadwalTrainer.php',
-    'App\\Models\\JadwalTrainerDetail' => $baseDir . '/app/Models/JadwalTrainerDetail.php',
     'App\\Models\\KategoriHargaTrainer' => $baseDir . '/app/Models/KategoriHargaTrainer.php',
     'App\\Models\\ProdukDetail' => $baseDir . '/app/Models/ProdukDetail.php',
     'App\\Models\\ProdukFoto' => $baseDir . '/app/Models/ProdukFoto.php',
