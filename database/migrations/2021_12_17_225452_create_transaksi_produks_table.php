@@ -30,6 +30,8 @@ class CreateTransaksiProduksTable extends Migration
             $table->boolean('tp_is_done')->default(false);
             $table->boolean('tp_is_cancel')->default(false);
             $table->bigInteger("tp_ongkir");
+            $table->string("tp_nama_payment_lib")->default("CashlezApi");
+            $table->string("tp_nama_ongkir_lib")->default("RajaOngkir");
             $table->dateTime("tp_create_at")->useCurrent();
             $table->dateTime("tp_update_at")->useCurrent()->useCurrentOnUpdate();
         });

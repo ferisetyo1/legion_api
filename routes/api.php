@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\DataMasterController;
 use App\Http\Controllers\GymController;
 use App\Http\Controllers\HargaTrainerController;
 use App\Http\Controllers\JadwalTrainerController;
@@ -43,6 +44,9 @@ Route::post('login/{role}/google', [AuthenticationController::class, 'logingoogl
 Route::post('register/customer', [AuthenticationController::class, 'registercustomer']);
 Route::post('password/reset/request', [AuthenticationController::class, 'requestreset']);
 Route::get("transaksiproduk/paid/{inv}",[TransaksiProdukController::class,"paidTransaksi"]);
+Route::get("master/syaratketentuan",[DataMasterController::class,"getSyaratKetentuan"]);
+Route::get("master/kebijakanprivasi",[DataMasterController::class,"getKebijakanPrivasi"]);
+Route::get("master/tentang",[DataMasterController::class,"getTentang"]);
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('logout', [AuthenticationController::class, 'logout']);
     Route::post('logoutall',  [AuthenticationController::class, 'logoutall']);
