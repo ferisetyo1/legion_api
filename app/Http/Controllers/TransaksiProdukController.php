@@ -133,9 +133,10 @@ class TransaksiProdukController extends Controller
         $data["tp_token_payment"] = md5(uniqid($data["tp_invoice"], true));
         $data["tp_user_id"] = $request->user()->id;
         $generateUrl = $this->generateUrl([
-            'inv' => $data["tp_token_payment"],
+            'inv' => $data["INV"],
             // 'amount' => $data['tp_ongkir'] + $cart->get()->sum('cart_harga'),
             'amount' => 1,
+            'tp_token_payment'=>$data["tp_token_payment"]
         ]);
         $data["tp_checkout_url"] = isset($generateUrl['generatedUrl']) ? $generateUrl['generatedUrl'] : '';
         $data["tp_tgl_expired_payment"] = Date("y-m-d h:i:s", strtotime(isset($generateUrl['expiredDate']) ? $generateUrl['expiredDate'] : ''));
@@ -176,8 +177,8 @@ class TransaksiProdukController extends Controller
                 "message" => "",
                 "data" => [
                     "request" => [
-                        "generatedUrl" => "https://link.cashlez.com/czlink/GR35641INV11639893460"
-                        // "generatedUrl" => $tp->tp_checkout_url
+                        // "generatedUrl" => "https://link.cashlez.com/czlink/GR35641INV11639893460"
+                        "generatedUrl" => $tp->tp_checkout_url
                     ]
                 ],
             ],JSON_UNESCAPED_SLASHES),

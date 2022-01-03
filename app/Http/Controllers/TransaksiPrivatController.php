@@ -15,7 +15,7 @@ class TransaksiPrivatController extends Controller
     public function index(Request $request)
     {
         $limit = isset($_GET["limit"]) ? $_GET["limit"] : 10;
-        $transaksi = TransaksiPrivat::with('hargaTrainer')->orderBy('tp_id', 'DESC')->where('tp_user_id',$request->user()->id);
+        $transaksi = TransaksiPrivat::with('hargaTrainer')->orderBy('tp_id', 'DESC')->where('tp_user_id', $request->user()->id);
         if (isset($_GET["query"])) {
             $transaksi = $transaksi->where("tp_invoice", "like", "%" . $_GET['query'] . "%");
         }
@@ -62,7 +62,6 @@ class TransaksiPrivatController extends Controller
             'tp_ht_id' => 'required',
             'tp_tgl_private' => 'required',
             'tp_jam_private' => 'required',
-            'tp_metode_pembayaran' => 'required',
         ]);
         if ($validate->fails()) {
             return response()->json([
@@ -71,37 +70,56 @@ class TransaksiPrivatController extends Controller
                 'data' => $validate->errors()
             ], 400);
         } else {
-            $ht=HargaTrainer::find($request->tp_ht_id);
-            $transaksi = TransaksiPrivat::where('tp_user_id',$request->user()->id)->where("tp_pt_id",$request->tp_pt_id)->where('tp_tgl_private', $request->tp_tgl_private)->whereRaw("('$request->tp_jam_private' >= tp_jam_private AND '$request->tp_jam_private' <= ADDTIME(tp_jam_private,'0:$ht->ht_waktu:0'))");
-            if ($transaksi->first() == null || $transaksi->first()->tp_status == 4) {
+            $ht = HargaTrainer::find($request->tp_ht_id);
+            $time = $this->hoursandmins($ht->ht_waktu);
+            $transaksi = TransaksiPrivat::where('tp_user_id', $request->user()->id)->where('tp_tgl_private', $request->tp_tgl_private)->whereRaw("('$request->tp_jam_private' >= tp_jam_private AND '$request->tp_jam_private' <= ADDTIME(tp_jam_private,'$time'))");
+            if ($transaksi->first() == null || $transaksi->first()->tp_is_done == 1) {
                 $request['tp_invoice'] = "INV" . $request->user()->id . time();
                 $request['tp_user_id'] = $request->user()->id;
-                $request['tp_is_paid'] = false;
-                $request['tp_is_confirm'] = false;
-                $request['tp_is_cancel'] = false;
-                $request['tp_is_done'] = false;
+                $request["tp_token_payment"] = md5(uniqid($request["tp_invoice"], true));
                 $generateUrl = $this->generateUrl([
-                    'inv' => $request['tp_invoice'],
-                    'amount' => $ht->ht_harga
+                    'tp_token_payment' => $request['tp_token_payment'],
+                    // 'amount' => $ht->ht_harga,
+                    'amount' => 1,
+                    'inv'=> $request['tp_invoice']
                 ]);
                 $request["tp_generate_url"] = isset($generateUrl['generatedUrl']) ? $generateUrl['generatedUrl'] : '';
                 $request["tp_waktu_expired"] = isset($generateUrl['expiredDate']) ? $generateUrl['expiredDate'] : '';
-                $transaksi = TransaksiPrivat::create($request->all());
+                $result = TransaksiPrivat::create($request->all());
                 return response()->json([
                     'status' => 'success' . date('d M Y') . substr($request->tp_jam_private, 0, 2),
                     'msg' => "Get data successfully",
-                    'data' => $transaksi
+                    'data' => $result,
+                    'sql'=>$transaksi->toSql(),
                 ], 200);
             } else {
-                return response()->json([
-                    'status' => 'success',
-                    'msg' => "Kamu sudah mempunyai jadwal lain dijam ini",
-                    'data' => $transaksi->first(),
-                    'sql' => $transaksi->toSql(),
-                    'tgl' => $request->tp_tgl_private
-                ], 400);
+            return response()->json([
+                'status' => 'success',
+                'msg' => "Kamu sudah mempunyai jadwal lain dijam ini",
+                'data' => $transaksi->first(),
+                'sql' => $transaksi->toSql(),
+                'tgl' => $request->tp_tgl_private,
+                "test" => "('$request->tp_jam_private' >= tp_jam_private AND '$request->tp_jam_private' <= ADDTIME(tp_jam_private,'0:$ht->ht_waktu:0'))"
+            ], 400);
             }
         }
+    }
+
+    function add_time($time, $plusMinutes)
+    {
+
+        $endTime = strtotime("+{$plusMinutes} minutes", strtotime($time));
+        return date('h:i:s', $endTime);
+    }
+
+    function hoursandmins($time, $format = '%02d:%02d')
+    {
+        if ($time < 1) {
+            return;
+        }
+        $hours = floor($time / 60);
+        $minutes = ($time % 60);
+        return sprintf($format, $hours, $minutes);
     }
 
     public function cekjadwal(Request $request)
@@ -126,14 +144,35 @@ class TransaksiPrivatController extends Controller
 
     public function updatePaid($id)
     {
-        $transaksi = TransaksiPrivat::find($id);
-        $transaksi->is_paid = true;
+        $transaksi = TransaksiPrivat::firstWhere('tp_token_payment', $id);
+        $transaksi->tp_is_paid = true;
+        $header = array(
+            "content-type: application/json"
+        );
+        $curl = $this->do_curl(
+            "https://api-link.cashlez.com/validate_url",
+            json_encode([
+                "status" => "",
+                "message" => "",
+                "data" => [
+                    "request" => [
+                        // "generatedUrl" => "https://link.cashlez.com/czlink/GR35641INV11639893460"
+                        "generatedUrl" => $transaksi->tp_generate_url
+                    ]
+                ],
+            ],JSON_UNESCAPED_SLASHES),
+            $header,
+        );
+        $json = json_decode($curl, $associative = true, $depth = 512, JSON_THROW_ON_ERROR);
+        $response = isset($json['data']) &&
+            isset($json['data']['response']) &&
+            isset($json['data']['response']['paymentType']) &&
+            isset($json['data']['response']['paymentType']['name']) ?
+            $json['data']['response']['paymentType']['name'] : null;
+        $transaksi->tp_metode_pembayaran=$response;
         $transaksi->save();
-        return response()->json([
-            'status' => 'success',
-            'msg' => "Get data successfully",
-            'data' => $transaksi
-        ], 200);
+        header("Location: https://nutrition.thelegion.co.id/");
+        die();
     }
 
     function verify_signature($string, $signature)
@@ -212,7 +251,7 @@ uDl3e11e6es212d2FvVhFntO1lFGjvB8e2GcWZ0XpKSsAUhm1B4=
 		        "merchantName": "Legion",
 		        "merchantDescription": "Tranksaksi",
 		        "token": "",
-		        "callbackSuccess": "",
+		        "callbackSuccess": "' . url('api/transaksiprivate/paid/' . $data['tp_token_payment']) . '",
 		        "callbackFailure": "",
 		        "message": "",
 		        "description": "Transaction Legion",

@@ -16,6 +16,7 @@ class CreateKategoriHargaTrainersTable extends Migration
         Schema::create('legion_kategori_harga_trainers', function (Blueprint $table) {
             $table->id('kht_id');
             $table->string('kht_nama');
+            $table->string('kht_is_online');
             $table->dateTime("kht_create_at")->useCurrent();
             $table->dateTime("kht_update_at")->useCurrent()->useCurrentOnUpdate();
         });

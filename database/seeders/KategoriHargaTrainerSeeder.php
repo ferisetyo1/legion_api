@@ -16,13 +16,16 @@ class KategoriHargaTrainerSeeder extends Seeder
     {
         KategoriHargaTrainer::insert([
             [
-                "kht_nama"=>"Online (Zoom)"
+                "kht_nama"=>"Online (Zoom)",
+                "kht_is_online"=>true
             ],
             [
-                "kht_nama"=>"Offline (Di Tempat Gym)"
+                "kht_nama"=>"Offline (Di Tempat Gym)",
+                "kht_is_online"=>false
             ],
             [
-                "kht_nama"=>"Offline (By Request)"
+                "kht_nama"=>"Offline (By Request)",
+                "kht_is_online"=>false
             ],
         ]);
     }

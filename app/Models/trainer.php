@@ -9,7 +9,7 @@ class trainer extends Model
 {
     use HasFactory;
     protected $primaryKey = "pt_id";
-    protected $table="legion_pt";
+    protected $table = "legion_pt";
     public $timestamps = false;
     protected $fillable = [
         'pt_gym_id',
@@ -22,7 +22,7 @@ class trainer extends Model
         'pt_kota',
         'pt_alamat'
     ];
-    protected $appends = ["pt_star_count","pt_default_harga"];
+    protected $appends = ["pt_star_count", "pt_default_harga"];
 
     public function getPtStarCountAttribute()
     {
@@ -37,21 +37,27 @@ class trainer extends Model
         else return 0;
     }
 
-    public function getPtDefaultHargaAttribute(){
-        return HargaTrainer::firstWhere("ht_pt_id",$this->pt_id);
+    public function getPtDefaultHargaAttribute()
+    {
+        return HargaTrainer::firstWhere("ht_pt_id", $this->pt_id);
     }
 
     public function review()
     {
-        return  $this->hasMany(RatingReview::class,"rr_pt_id","pt_id");
+        return  $this->hasMany(RatingReview::class, "rr_pt_id", "pt_id");
     }
     public function harga()
     {
-        return  $this->hasMany(HargaTrainer::class,"ht_pt_id","pt_id");
+        return  $this->hasMany(HargaTrainer::class, "ht_pt_id", "pt_id");
     }
     public function gym()
     {
-        return  $this->belongsTo(gym::class,"pt_gym_id","gym_id");
+        return  $this->belongsTo(gym::class, "pt_gym_id", "gym_id");
+    }
+
+    public function jadwal()
+    {
+        return $this->hasMany(JadwalTrainer::class, "jt_pt_id", "pt_id")->where('jt_pt_confirm', 1)->where('jt_gym_confirm', 1);
     }
 
     public function getPtNamaAttribute($s)

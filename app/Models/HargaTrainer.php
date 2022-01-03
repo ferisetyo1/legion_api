@@ -17,15 +17,11 @@ class HargaTrainer extends Model
         'ht_waktu',
         'ht_kht_id'
     ];
-    protected $appends = ["ht_kategory_name"];
+    protected $appends = ["ht_kategory"];
 
-    public function getHtKategoryNameAttribute()
+    public function getHtKategoryAttribute()
     {
-        $kht=KategoriHargaTrainer::firstWhere('kht_id',$this->ht_kht_id);
-        if ($kht!=null) {
-            return $kht->kht_nama;
-        }
-        return "";
+        return KategoriHargaTrainer::find($this->ht_kht_id);
     }
 
 }

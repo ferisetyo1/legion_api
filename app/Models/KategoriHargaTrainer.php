@@ -13,5 +13,6 @@ class KategoriHargaTrainer extends Model
     public $timestamps = false;
     protected $fillable = [
         'kht_nama',
+        'kht_is_online',
     ];
 }

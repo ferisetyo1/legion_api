@@ -16,7 +16,7 @@ class JadwalTrainerController extends Controller
             $jadwal=JadwalTrainer::where('jt_pt_id',$pt->pt_id)->where('jt_gym_confirm',1)->get();
             return response()->json([
                 'status' => 'success',
-                'msg' => 'Success get jadwal',
+                'msg' => 'Success get jadwal'.$pt->pt_id,
                 'data' => $jadwal
             ], 200);
         }

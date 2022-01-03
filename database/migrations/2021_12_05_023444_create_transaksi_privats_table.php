@@ -24,7 +24,7 @@ class CreateTransaksiPrivatsTable extends Migration
             $table->string('tp_jam_private');
             $table->string('tp_nama_gym')->nullable();
             $table->string('tp_token_payment');
-            $table->string('tp_metode_pembayaran');
+            $table->string('tp_metode_pembayaran')->nullable();
             $table->string('tp_waktu_expired');
             $table->boolean('tp_is_paid')->default(false);
             $table->boolean('tp_is_confirm')->default(false);

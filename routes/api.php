@@ -44,6 +44,7 @@ Route::post('login/{role}/google', [AuthenticationController::class, 'logingoogl
 Route::post('register/customer', [AuthenticationController::class, 'registercustomer']);
 Route::post('password/reset/request', [AuthenticationController::class, 'requestreset']);
 Route::get("transaksiproduk/paid/{inv}",[TransaksiProdukController::class,"paidTransaksi"]);
+Route::get('transaksiprivate/paid/{id}',  [TransaksiPrivatController::class, 'updatePaid']);
 Route::get("master/syaratketentuan",[DataMasterController::class,"getSyaratKetentuan"]);
 Route::get("master/kebijakanprivasi",[DataMasterController::class,"getKebijakanPrivasi"]);
 Route::get("master/tentang",[DataMasterController::class,"getTentang"]);
@@ -72,7 +73,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('alamatpengiriman/counter',  [AlamatPengirimanController::class, 'counter']);
     Route::post('transaksiprivate/add',  [TransaksiPrivatController::class, 'create']);
     Route::get('transaksiprivate',  [TransaksiPrivatController::class, 'index']);
-    Route::get('transaksiprivate/verify',  [TransaksiPrivatController::class, 'verify']);
+
     Route::get('transaksiprivate/{id}',  [TransaksiPrivatController::class, 'show']);
     Route::get('transaksiprivate-count',  [TransaksiPrivatController::class, 'counter']);
     Route::get('cart',  [CartController::class, 'index']);
