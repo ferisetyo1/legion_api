@@ -22,7 +22,7 @@ class CreateTrainersTable extends Migration
             $table->string("pt_gender")->nullable();
             $table->integer("pt_tinggi")->nullable();
             $table->integer("pt_berat")->nullable();
-            $table->string("pt_image")->nullable();
+            $table->text("pt_image")->nullable();
             $table->text("pt_desc")->nullable();
             $table->string("pt_kota")->nullable();
             $table->text("pt_alamat")->nullable();
