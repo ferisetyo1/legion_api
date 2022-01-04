@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\HargaTrainer;
 use App\Models\TransaksiPrivat;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
 use stdClass;
@@ -15,7 +16,14 @@ class TransaksiPrivatController extends Controller
     public function index(Request $request)
     {
         $limit = isset($_GET["limit"]) ? $_GET["limit"] : 10;
-        $transaksi = TransaksiPrivat::with('hargaTrainer')->orderBy('tp_id', 'DESC')->where('tp_user_id', $request->user()->id);
+        $transaksi = TransaksiPrivat::with('hargaTrainer')->orderBy('tp_id', 'DESC');
+        if (auth()->user()->role=="customer") {
+            $transaksi = $transaksi->where('tp_user_id', $request->user()->id);
+        }
+        if (auth()->user()->role=="trainer") {
+            $user=User::find($request->user()->id);
+            $transaksi = $transaksi->where('tp_pt_id', $user->trainer->pt_id)->where("tp_is_paid", 1);
+        }
         if (isset($_GET["query"])) {
             $transaksi = $transaksi->where("tp_invoice", "like", "%" . $_GET['query'] . "%");
         }
@@ -49,7 +57,7 @@ class TransaksiPrivatController extends Controller
                 'total_items' => $transaksi->total(),
                 'total_page' => $transaksi->lastPage(),
                 'current_page' => $transaksi->currentPage(),
-                'items' => $transaksi->items()
+                'items' => $transaksi->items(),
             ]
         ], 200);
     }
@@ -72,8 +80,8 @@ class TransaksiPrivatController extends Controller
         } else {
             $ht = HargaTrainer::find($request->tp_ht_id);
             $time = $this->hoursandmins($ht->ht_waktu);
-            $transaksi = TransaksiPrivat::where('tp_user_id', $request->user()->id)->where('tp_tgl_private', $request->tp_tgl_private)->whereRaw("('$request->tp_jam_private' >= tp_jam_private AND '$request->tp_jam_private' <= ADDTIME(tp_jam_private,'$time'))");
-            if ($transaksi->first() == null || $transaksi->first()->tp_is_done == 1) {
+            $transaksi = TransaksiPrivat::where('tp_user_id', $request->user()->id)->where('tp_is_cancel', 0)->where('tp_tgl_private', $request->tp_tgl_private)->whereRaw("('$request->tp_jam_private' >= tp_jam_private AND '$request->tp_jam_private' <= ADDTIME(tp_jam_private,'$time'))");
+            if ($transaksi->first() == null) {
                 $request['tp_invoice'] = "INV" . $request->user()->id . time();
                 $request['tp_user_id'] = $request->user()->id;
                 $request["tp_token_payment"] = md5(uniqid($request["tp_invoice"], true));
@@ -134,7 +142,7 @@ class TransaksiPrivatController extends Controller
 
     public function show($id, Request $request)
     {
-        $transaksi = TransaksiPrivat::with('trainer', 'hargaTrainer', 'alamatprivate')->find($id);
+        $transaksi = TransaksiPrivat::with('trainer', 'hargaTrainer', 'alamatprivate','customer')->find($id);
         return response()->json([
             'status' => 'success',
             'msg' => "Get data successfully",
@@ -307,11 +315,13 @@ uDl3e11e6es212d2FvVhFntO1lFGjvB8e2GcWZ0XpKSsAUhm1B4=
 
     public function privateBerlangsung(Request $request)
     {
-        $transaksi = TransaksiPrivat::where('tp_tgl_private', Date(""))->whereRaw("'$request->tp_jam_private' >= tp_jam_private AND '$request->tp_jam_private' <= ADDTIME(tp_jam_private,'1:0:0')")->first();
+        date_default_timezone_set('Asia/Jakarta');
+        $time=Date("H:i");
+        $transaksi = TransaksiPrivat::where('tp_user_id', $request->user()->id)->where('tp_tgl_private', $request->tp_tgl_private)->whereRaw("('$time' >= tp_jam_private))");
         return response()->json([
             'status' => 'success',
             'msg' => "Get data successfully",
-            'data' => $transaksi == null
+            'data' => $transaksi
         ], 200);
     }
 

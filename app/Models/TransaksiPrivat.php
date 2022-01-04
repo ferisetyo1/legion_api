@@ -39,6 +39,11 @@ class TransaksiPrivat extends Model
     {
         return $this->belongsTo(trainer::class,'tp_pt_id','pt_id');
     }
+    
+    public function customer()
+    {
+        return $this->belongsTo(User::class,'tp_user_id','id');
+    }
 
     public function getTpMetodePembayaranAttribute($s)
     {
@@ -98,7 +103,7 @@ class TransaksiPrivat extends Model
 
         if ($this->tp_is_confirm) {
             return [
-                "text"=>"Dikonfirmasi",
+                "text"=>auth()->user()->role=="customer"?"Dikonfirmasi":"Diterima",
                 "color"=>"#FFBA49"
             ];
         }
