@@ -133,6 +133,9 @@ class TransaksiPrivat extends Model
     public function getTpIsCancelAttribute($i)
     {
         if ($this->getTpSecondDiffAttribute()<0 && $this->tp_is_confirm==0) {
+            $this->tp_is_cancel=true;
+            $this->save();
+            $this->refresh();
             return true;
         }
         return $i==1?true:false;
