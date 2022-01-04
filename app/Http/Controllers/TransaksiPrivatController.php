@@ -16,6 +16,7 @@ class TransaksiPrivatController extends Controller
     public function index(Request $request)
     {
         $limit = isset($_GET["limit"]) ? $_GET["limit"] : 10;
+        $transaksi=TransaksiPrivat::paginate(10);
         $transaksi = TransaksiPrivat::with('hargaTrainer')->orderBy('tp_id', 'DESC');
         if (auth()->user()->role=="customer") {
             $transaksi = $transaksi->where('tp_user_id', $request->user()->id);
