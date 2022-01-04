@@ -142,7 +142,8 @@ class TransaksiPrivatController extends Controller
 
     public function show($id, Request $request)
     {
-        $transaksi = TransaksiPrivat::with('trainer', 'hargaTrainer', 'alamatprivate','customer')->find($id);
+        date_default_timezone_set('Asia/Jakarta');
+        $transaksi = TransaksiPrivat::with($this->relation())->find($id);
         return response()->json([
             'status' => 'success',
             'msg' => "Get data successfully",
@@ -332,5 +333,36 @@ uDl3e11e6es212d2FvVhFntO1lFGjvB8e2GcWZ0XpKSsAUhm1B4=
             'msg' => "Get data successfully",
             'data' => TransaksiPrivat::where('tp_user_id', $request->user()->id)->count()
         ], 200);
+    }
+
+    public function terima($id,Request $request)
+    {
+        date_default_timezone_set('Asia/Jakarta');
+        $transaksi=TransaksiPrivat::with($this->relation())->find($id);
+        $transaksi->tp_is_confirm=true;
+        $transaksi->save();
+        return  response()->json([
+            'status' => 'success',
+            'msg' => "Get data successfully",
+            'data' => $transaksi
+        ], 200);
+    }
+
+    public function tolak($id,Request $request)
+    {
+        date_default_timezone_set('Asia/Jakarta');
+        $transaksi=TransaksiPrivat::with($this->relation())->find($id);
+        $transaksi->tp_is_cancel=true;
+        $transaksi->save();
+        return  response()->json([
+            'status' => 'success',
+            'msg' => "Get data successfully",
+            'data' => $transaksi
+        ], 200);
+    }
+
+    public function relation()
+    {
+        return ['trainer', 'hargaTrainer', 'alamatprivate','customer'];
     }
 }

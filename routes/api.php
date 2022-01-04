@@ -73,9 +73,10 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('alamatpengiriman/counter',  [AlamatPengirimanController::class, 'counter']);
     Route::post('transaksiprivate/add',  [TransaksiPrivatController::class, 'create']);
     Route::get('transaksiprivate',  [TransaksiPrivatController::class, 'index']);
-
-    Route::get('transaksiprivate/{id}',  [TransaksiPrivatController::class, 'show']);
-    Route::get('transaksiprivate-count',  [TransaksiPrivatController::class, 'counter']);
+    Route::get('transaksiprivate/show/{id}',  [TransaksiPrivatController::class, 'show']);
+    Route::get('transaksiprivate/count',  [TransaksiPrivatController::class, 'counter']);
+    Route::post('transaksiprivate/terima/{id}',  [TransaksiPrivatController::class, 'terima']);
+    Route::post('transaksiprivate/tolak/{id}',  [TransaksiPrivatController::class, 'tolak']);
     Route::get('cart',  [CartController::class, 'index']);
     Route::post('cart/add',  [CartController::class, 'create']);
     Route::post('cart/edit',  [CartController::class, 'update']);
