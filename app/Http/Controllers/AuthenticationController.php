@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\customer;
 use App\Models\gym;
 use App\Models\ResetPassword;
+use App\Models\trainer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -21,7 +22,7 @@ use Illuminate\Support\Str;
 
 class AuthenticationController extends Controller
 {
-    public function login($role,Request $request)
+    public function login($role, Request $request)
     {
         $validate = Validator::make($request->all(), [
             'email' => 'required',
@@ -46,7 +47,7 @@ class AuthenticationController extends Controller
                 return response()->json($respon, 401);
             }
 
-            $user = User::where('email', $request->email)->where('role',$role)->first();
+            $user = User::where('email', $request->email)->where('role', $role)->first();
             if (!Hash::check($request->password, $user->password, [])) {
                 throw new \Exception('Error in Login');
             }
@@ -64,7 +65,7 @@ class AuthenticationController extends Controller
         }
     }
 
-    public function logingoogle($role,Request $request)
+    public function logingoogle($role, Request $request)
     {
         $validate = Validator::make($request->all(), [
             'email' => 'required'
@@ -77,7 +78,7 @@ class AuthenticationController extends Controller
             ];
             return response()->json($respon, 200);
         } else {
-            $user = User::where('email', $request->email)->where('role',$role)->first();
+            $user = User::where('email', $request->email)->where('role', $role)->first();
             if ($user == null) {
                 $respon = [
                     'status' => 'error',
@@ -215,19 +216,20 @@ class AuthenticationController extends Controller
             'password' => 'required|min:8|required_with:password_confirmed|same:password_confirmed',
         ]);
         if ($validate->fails()) {
-            return back()->withInput()->with("error","Password harus 8 karakter dan cocok.");
+            return back()->withInput()->with("error", "Password harus 8 karakter dan cocok.");
         } else {
-            $resetpassword=ResetPassword::firstWhere('token',$request->token);
-            $user=User::firstWhere('email',$resetpassword->email);
-            $user->password=Hash::make($request->password);
+            $resetpassword = ResetPassword::firstWhere('token', $request->token);
+            $user = User::firstWhere('email', $resetpassword->email);
+            $user->password = Hash::make($request->password);
             $resetpassword->delete();
             return redirect('sukses-reset');
         }
     }
 
-    public function updateprofilcustomer(Request $request){
-        $validate = Validator::make($request->all(),[
-            'nama'=>"required:min:4",
+    public function updateprofil(Request $request)
+    {
+        $validate = Validator::make($request->all(), [
+            'nama' => "required:min:4",
             'image' => 'file|image|mimes:jpeg,png,jpg|max:2048',
             'tinggi' => 'numeric',
             'berat' => 'numeric',
@@ -239,21 +241,34 @@ class AuthenticationController extends Controller
                 'data' => $validate->errors(),
             ];
             return response()->json($respon, 400);
-        }else{
-            $user=User::find($request->user()->id);
-            $user->name=$request->nama;
+        } else {
+            $user = User::with('customer', 'trainer')->find($request->user()->id);
+            $user->name = $request->nama;
             $user->save();
-            $customer=customer::find($user->customer->customer_id);
-            $customer->customer_nama=$request->nama;
-            $customer->customer_tinggi=$request->tinggi;
-            $customer->customer_berat=$request->berat;
-            $customer->customer_gender=$request->gender;
-            // $customer->save();
+            if ($user->role == "customer") {
+                // $customer = customer::find($user->customer->customer_id);
+                $user->customer->customer_nama = $request->nama;
+                $user->customer->customer_tinggi = $request->tinggi;
+                $user->customer->customer_berat = $request->berat;
+                $user->customer->customer_gender = $request->gender;
+                $user->customer->save();
+            }
+            if ($user->role == "trainer") {
+                // $trainer = trainer::find($user->trainer->pt_id);
+                $user->trainer->pt_nama = $request->nama;
+                $user->trainer->pt_tinggi = $request->tinggi;
+                $user->trainer->pt_berat = $request->berat;
+                $user->trainer->pt_gender = $request->gender;
+                $user->trainer->save();
+                // $user->trainer=$trainer;
+            }
+            $user->save();
+            $user->refresh();
+
             $respon = [
                 'status' => 'Success',
                 'msg' => 'Success update user.',
-                'data' => $user,
-                'data3'=>$customer->save()
+                'data' => $user
             ];
             return response()->json($respon, 200);
         }

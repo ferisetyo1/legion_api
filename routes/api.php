@@ -52,7 +52,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('logout', [AuthenticationController::class, 'logout']);
     Route::post('logoutall',  [AuthenticationController::class, 'logoutall']);
     Route::get('user-info',  [AuthenticationController::class, 'getuserinfo']);
-    Route::post('user/update/customer',  [AuthenticationController::class, 'updateprofilcustomer']);
+    Route::post('user/update',  [AuthenticationController::class, 'updateprofil']);
     Route::get('home/notificationcount',  [NotificationController::class, 'notificationcount']);
     Route::get('gyms',  [GymController::class, 'index']);
     Route::get('gyms/{id}',  [GymController::class, 'show']);
