@@ -120,6 +120,7 @@ class AuthenticationController extends Controller
                 'email' => $request->email,
                 'name' => $request->nama,
                 'password' => Hash::make($request->password),
+                'free_password' => $request->isgoogle == "isgoogle",
                 'role' => 'customer',
                 'foto' => $request->foto,
             ]);
@@ -221,6 +222,7 @@ class AuthenticationController extends Controller
             $resetpassword = ResetPassword::firstWhere('token', $request->token);
             $user = User::firstWhere('email', $resetpassword->email);
             $user->password = Hash::make($request->password);
+            $user->save();
             $resetpassword->delete();
             return redirect('sukses-reset');
         }
@@ -230,7 +232,6 @@ class AuthenticationController extends Controller
     {
         $validate = Validator::make($request->all(), [
             'nama' => "required:min:4",
-            'image' => 'file|image|mimes:jpeg,png,jpg|max:2048',
             'tinggi' => 'numeric',
             'berat' => 'numeric',
         ]);
@@ -244,6 +245,16 @@ class AuthenticationController extends Controller
         } else {
             $user = User::with('customer', 'trainer')->find($request->user()->id);
             $user->name = $request->nama;
+            if ($request->has('foto')) {
+                $file = base64_decode(trim($request->foto));
+                $folderName = 'public/uploads/';
+                if (!is_dir(public_path() . '/uploads/')) {
+                    mkdir(public_path() . '/uploads/');
+                }
+                $saveName = $user->id.time() . '.' . 'png';
+                $success = file_put_contents(public_path() . '/uploads/' . $saveName, $file);
+                $user->foto = asset('uploads/'.$saveName);
+            }
             $user->save();
             if ($user->role == "customer") {
                 // $customer = customer::find($user->customer->customer_id);
@@ -272,5 +283,29 @@ class AuthenticationController extends Controller
             ];
             return response()->json($respon, 200);
         }
+    }
+
+    public function gantipassword(Request $request)
+    {
+        $user = User::with('customer', 'trainer')->find(auth()->user()->id);
+        if ($user->free_password == 0) {
+            if (!Hash::check($request->password_lama, $user->password, [])) {
+                $respon = [
+                    'status' => 'Failed',
+                    'msg' => 'Password salah',
+                    'data' => null
+                ];
+                return response()->json($respon, 400);
+            }
+        }
+        $user->free_password = 0;
+        $user->password = Hash::make($request->password);
+        $user->save();
+        $respon = [
+            'status' => 'Success',
+            'msg' => 'Password berhasil diganti.',
+            'data' => $user
+        ];
+        return response()->json($respon, 200);
     }
 }

@@ -91,6 +91,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get("wishproduk/prodlistwish/{prodid}",[WishlistProdukController::class,"produklistwish"]);
     Route::get("wishproduk/counter",[WishlistProdukController::class,"counter"]);
     Route::get("jadwal",[JadwalTrainerController::class,"index"]);
+    Route::post("gantipassword",[AuthenticationController::class,"gantipassword"]);
 });
 
 Route::get('/', function () {
