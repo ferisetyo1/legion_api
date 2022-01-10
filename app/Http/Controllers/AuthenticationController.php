@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use \Validator;
 use App\Models\User;
 use Database\Seeders\CustomerSeeder;
+use Exception;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -251,9 +252,9 @@ class AuthenticationController extends Controller
                 if (!is_dir(public_path() . '/uploads/')) {
                     mkdir(public_path() . '/uploads/');
                 }
-                $saveName = $user->id.time() . '.' . 'png';
+                $saveName = $user->id . time() . '.' . 'png';
                 $success = file_put_contents(public_path() . '/uploads/' . $saveName, $file);
-                $user->foto = asset('uploads/'.$saveName);
+                $user->foto = asset('uploads/' . $saveName);
             }
             $user->save();
             if ($user->role == "customer") {
@@ -279,9 +280,23 @@ class AuthenticationController extends Controller
             $respon = [
                 'status' => 'Success',
                 'msg' => 'Success update user.',
-                'data' => $user
+                'data' => $user,
+                'size' => $this->getBase64ImageSize(trim($request->foto))
             ];
             return response()->json($respon, 200);
+        }
+    }
+
+    public function getBase64ImageSize($base64Image)
+    { //return memory size in B, KB, MB
+        try {
+            $size_in_bytes = (int) (strlen(rtrim($base64Image, '=')) * 3 / 4);
+            $size_in_kb    = $size_in_bytes / 1024;
+            $size_in_mb    = $size_in_kb / 1024;
+
+            return $size_in_mb;
+        } catch (Exception $e) {
+            return $e;
         }
     }
 
