@@ -83,6 +83,7 @@ class AlamatPrivateController extends Controller
             ], 200);
         }
     }
+    
     public function counter(Request $request)
     {
         return response()->json([

@@ -16,13 +16,13 @@ class TransaksiPrivatController extends Controller
     public function index(Request $request)
     {
         $limit = isset($_GET["limit"]) ? $_GET["limit"] : 10;
-        $transaksi=TransaksiPrivat::paginate(10);
+        $transaksi = TransaksiPrivat::paginate(10);
         $transaksi = TransaksiPrivat::with('hargaTrainer')->orderBy('tp_id', 'DESC');
-        if (auth()->user()->role=="customer") {
+        if (auth()->user()->role == "customer") {
             $transaksi = $transaksi->where('tp_user_id', $request->user()->id);
         }
-        if (auth()->user()->role=="trainer") {
-            $user=User::find($request->user()->id);
+        if (auth()->user()->role == "trainer") {
+            $user = User::find($request->user()->id);
             $transaksi = $transaksi->where('tp_pt_id', $user->trainer->pt_id)->where("tp_is_paid", 1);
         }
         if (isset($_GET["query"])) {
@@ -90,7 +90,7 @@ class TransaksiPrivatController extends Controller
                     'tp_token_payment' => $request['tp_token_payment'],
                     // 'amount' => $ht->ht_harga,
                     'amount' => 1,
-                    'inv'=> $request['tp_invoice']
+                    'inv' => $request['tp_invoice']
                 ]);
                 $request["tp_generate_url"] = isset($generateUrl['generatedUrl']) ? $generateUrl['generatedUrl'] : '';
                 $request["tp_waktu_expired"] = isset($generateUrl['expiredDate']) ? $generateUrl['expiredDate'] : '';
@@ -99,17 +99,17 @@ class TransaksiPrivatController extends Controller
                     'status' => 'success' . date('d M Y') . substr($request->tp_jam_private, 0, 2),
                     'msg' => "Get data successfully",
                     'data' => $result,
-                    'sql'=>$transaksi->toSql(),
+                    'sql' => $transaksi->toSql(),
                 ], 200);
             } else {
-            return response()->json([
-                'status' => 'success',
-                'msg' => "Kamu sudah mempunyai jadwal lain dijam ini",
-                'data' => $transaksi->first(),
-                'sql' => $transaksi->toSql(),
-                'tgl' => $request->tp_tgl_private,
-                "test" => "('$request->tp_jam_private' >= tp_jam_private AND '$request->tp_jam_private' <= ADDTIME(tp_jam_private,'0:$ht->ht_waktu:0'))"
-            ], 400);
+                return response()->json([
+                    'status' => 'success',
+                    'msg' => "Kamu sudah mempunyai jadwal lain dijam ini",
+                    'data' => $transaksi->first(),
+                    'sql' => $transaksi->toSql(),
+                    'tgl' => $request->tp_tgl_private,
+                    "test" => "('$request->tp_jam_private' >= tp_jam_private AND '$request->tp_jam_private' <= ADDTIME(tp_jam_private,'0:$ht->ht_waktu:0'))"
+                ], 400);
             }
         }
     }
@@ -170,7 +170,7 @@ class TransaksiPrivatController extends Controller
                         "generatedUrl" => $transaksi->tp_generate_url
                     ]
                 ],
-            ],JSON_UNESCAPED_SLASHES),
+            ], JSON_UNESCAPED_SLASHES),
             $header,
         );
         $json = json_decode($curl, $associative = true, $depth = 512, JSON_THROW_ON_ERROR);
@@ -179,7 +179,7 @@ class TransaksiPrivatController extends Controller
             isset($json['data']['response']['paymentType']) &&
             isset($json['data']['response']['paymentType']['name']) ?
             $json['data']['response']['paymentType']['name'] : null;
-        $transaksi->tp_metode_pembayaran=$response;
+        $transaksi->tp_metode_pembayaran = $response;
         $transaksi->save();
         header("Location: https://nutrition.thelegion.co.id/");
         die();
@@ -318,12 +318,17 @@ uDl3e11e6es212d2FvVhFntO1lFGjvB8e2GcWZ0XpKSsAUhm1B4=
     public function privateBerlangsung(Request $request)
     {
         date_default_timezone_set('Asia/Jakarta');
-        $time=Date("H:i");
-        $transaksi = TransaksiPrivat::where('tp_user_id', $request->user()->id)->where('tp_tgl_private', $request->tp_tgl_private)->whereRaw("('$time' >= tp_jam_private))");
+        $time = Date("H:i");
+        $date = Date('Y-m-d');
+        $transaksi = TransaksiPrivat::with($this->relation())->where('tp_user_id', $request->user()->id)->where('tp_tgl_private', $date)->whereRaw("'$time' > tp_jam_private")->where('tp_is_paid', 1)->where('tp_is_confirm', 1)->where('tp_is_cancel', 0)->where('tp_is_done', 0)->orderby('tp_jam_private', 'desc');
+        $transaksi = $transaksi->first();
+
         return response()->json([
             'status' => 'success',
             'msg' => "Get data successfully",
-            'data' => $transaksi
+            'data' => $transaksi->tp_jam_private < $time && $transaksi->tp_jam_private_end > $time ? $transaksi : null,
+            // 'sql'=>$transaksi->toSql(),
+            // 'date'=>$date
         ], 200);
     }
 
@@ -336,11 +341,11 @@ uDl3e11e6es212d2FvVhFntO1lFGjvB8e2GcWZ0XpKSsAUhm1B4=
         ], 200);
     }
 
-    public function terima($id,Request $request)
+    public function terima($id, Request $request)
     {
         date_default_timezone_set('Asia/Jakarta');
-        $transaksi=TransaksiPrivat::with($this->relation())->find($id);
-        $transaksi->tp_is_confirm=true;
+        $transaksi = TransaksiPrivat::with($this->relation())->find($id);
+        $transaksi->tp_is_confirm = true;
         $transaksi->save();
         return  response()->json([
             'status' => 'success',
@@ -349,11 +354,23 @@ uDl3e11e6es212d2FvVhFntO1lFGjvB8e2GcWZ0XpKSsAUhm1B4=
         ], 200);
     }
 
-    public function tolak($id,Request $request)
+    public function tolak($id, Request $request)
     {
         date_default_timezone_set('Asia/Jakarta');
-        $transaksi=TransaksiPrivat::with($this->relation())->find($id);
-        $transaksi->tp_is_cancel=true;
+        $transaksi = TransaksiPrivat::with($this->relation())->find($id);
+        $transaksi->tp_is_cancel = true;
+        $transaksi->save();
+        return  response()->json([
+            'status' => 'success',
+            'msg' => "Get data successfully",
+            'data' => $transaksi
+        ], 200);
+    }
+
+    public function inputMeetUrl(Request $request)
+    {
+        $transaksi = TransaksiPrivat::with($this->relation())->find($request['tp_id']);
+        $transaksi->tp_meet_url = $request['tp_meet_url'];
         $transaksi->save();
         return  response()->json([
             'status' => 'success',
@@ -364,6 +381,6 @@ uDl3e11e6es212d2FvVhFntO1lFGjvB8e2GcWZ0XpKSsAUhm1B4=
 
     public function relation()
     {
-        return ['trainer', 'hargaTrainer', 'alamatprivate','customer'];
+        return ['trainer', 'hargaTrainer', 'alamatprivate', 'customer'];
     }
 }

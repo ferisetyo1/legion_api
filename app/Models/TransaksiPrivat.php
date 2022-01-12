@@ -125,7 +125,7 @@ class TransaksiPrivat extends Model
     {
         // $date1 = new DateTime($this->tp_tgl_private.' '.$this->tp_jam_private.':00');
         $date1=new DateTime();
-        $date2 = new DateTime($this->tp_tgl_private.' '.$this->getTpJamPrivateEndAttribute().':00');
+        $date2 = new DateTime($this->tp_tgl_private.' '.$this->tp_jam_private.':00');
         $diff_second = $date2->getTimestamp()-$date1->getTimestamp();
         return $diff_second;
     }
