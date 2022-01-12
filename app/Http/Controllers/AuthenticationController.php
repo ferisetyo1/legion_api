@@ -263,6 +263,7 @@ class AuthenticationController extends Controller
                 $user->customer->customer_tinggi = $request->tinggi;
                 $user->customer->customer_berat = $request->berat;
                 $user->customer->customer_gender = $request->gender;
+                $user->customer->customer_image = $user->foto;
                 $user->customer->save();
             }
             if ($user->role == "trainer") {
@@ -271,6 +272,7 @@ class AuthenticationController extends Controller
                 $user->trainer->pt_tinggi = $request->tinggi;
                 $user->trainer->pt_berat = $request->berat;
                 $user->trainer->pt_gender = $request->gender;
+                $user->trainer->pt_image = $user->foto;
                 $user->trainer->save();
                 // $user->trainer=$trainer;
             }
