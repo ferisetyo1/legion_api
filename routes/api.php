@@ -79,6 +79,11 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('transaksiprivate/tolak/{id}',  [TransaksiPrivatController::class, 'tolak']);
     Route::post('transaksiprivate/inputmeeturl',  [TransaksiPrivatController::class, 'inputMeetUrl']);
     Route::get('transaksiprivate/berlangsung',  [TransaksiPrivatController::class, 'privateBerlangsung']);
+    Route::get('transaksiprivate/onthisday',  [TransaksiPrivatController::class, 'transaksiOnThisDay']);
+    Route::get('transaksiprivate/totalpesanan',  [TransaksiPrivatController::class, 'totalPesanan']);
+    Route::get('transaksiprivate/pendapatan',  [TransaksiPrivatController::class, 'totalPendapatan']);
+    Route::get('transaksiprivate/detailpendapatan',  [TransaksiPrivatController::class, 'detailPendapatan']);
+    Route::get('transaksiprivate/detailperformabar',  [TransaksiPrivatController::class, 'detailPerformaBar']);
     Route::get('cart',  [CartController::class, 'index']);
     Route::post('cart/add',  [CartController::class, 'create']);
     Route::post('cart/edit',  [CartController::class, 'update']);

@@ -78,4 +78,24 @@ class User extends Authenticatable
     {
         return ucwords($s);
     }
+
+//     poin_id
+// poin_customer_id
+// poin_from
+// poin_value
+// poin_expired
+// poin_create_at
+// poin_update_at
+
+// notif_id
+// notif_user_id
+// notif_title
+// notif_body
+// notif_tipe
+
+// //notif_tipe
+// ntipe_id
+// ntipe_nama
+
+
 }

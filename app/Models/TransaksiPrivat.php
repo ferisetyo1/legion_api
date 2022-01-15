@@ -88,7 +88,7 @@ class TransaksiPrivat extends Model
     */
     public function getTpStatusAttribute()
     {
-        if ($this->tp_is_done) {
+        if ($this->getTpIsDoneAttribute($this->tp_is_done)) {
             return [
                 "text" => "Selesai",
                 "color" => "#55D85A"
@@ -130,10 +130,31 @@ class TransaksiPrivat extends Model
         return $diff_second;
     }
 
+
+    public function getTpSecondDiffEnd()
+    {
+        // $date1 = new DateTime($this->tp_tgl_private.' '.$this->tp_jam_private.':00');
+        $date1=new DateTime();
+        $date2 = new DateTime($this->tp_tgl_private.' '.$this->getTpJamPrivateEndAttribute().':00');
+        $diff_second = $date2->getTimestamp()-$date1->getTimestamp();
+        return $diff_second;
+    }
+
     public function getTpIsCancelAttribute($i)
     {
-        if ($this->getTpSecondDiffAttribute()<0 && $this->tp_is_confirm==0) {
+        if ($this->getTpSecondDiffAttribute()<=0 && $this->tp_is_confirm==0) {
             $this->tp_is_cancel=true;
+            $this->save();
+            $this->refresh();
+            return true;
+        }
+        return $i==1?true:false;
+    }
+
+    public function getTpIsDoneAttribute($i)
+    {
+        if ($this->getTpSecondDiffEnd()<=0 && $this->tp_is_confirm==1) {
+            $this->tp_is_done=true;
             $this->save();
             $this->refresh();
             return true;

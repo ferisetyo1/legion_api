@@ -16,7 +16,6 @@ class TransaksiPrivatController extends Controller
     public function index(Request $request)
     {
         $limit = isset($_GET["limit"]) ? $_GET["limit"] : 10;
-        $transaksi = TransaksiPrivat::paginate(10);
         $transaksi = TransaksiPrivat::with('hargaTrainer')->orderBy('tp_id', 'DESC');
         if (auth()->user()->role == "customer") {
             $transaksi = $transaksi->where('tp_user_id', $request->user()->id);
@@ -59,6 +58,242 @@ class TransaksiPrivatController extends Controller
                 'total_page' => $transaksi->lastPage(),
                 'current_page' => $transaksi->currentPage(),
                 'items' => $transaksi->items(),
+            ]
+        ], 200);
+    }
+
+    public function transaksiOnThisDay(Request $request)
+    {
+        $limit = isset($_GET["limit"]) ? $_GET["limit"] : 10;
+        $transaksi = TransaksiPrivat::paginate(10);
+        $transaksi = TransaksiPrivat::with('hargaTrainer')->orderBy('tp_id', 'DESC');
+        if (auth()->user()->role == "customer") {
+            $transaksi = $transaksi->where('tp_user_id', $request->user()->id);
+        }
+        if (auth()->user()->role == "trainer") {
+            $user = User::find($request->user()->id);
+            $transaksi = $transaksi->where('tp_pt_id', $user->trainer->pt_id)->where("tp_is_paid", 1);
+        }
+
+        //dikonfirmasi
+        $date = Date('Y-m-d');
+        $transaksi = $transaksi->where('tp_tgl_private', $date)->where("tp_is_cancel", 0)->where("tp_is_done", 0)->where("tp_is_paid", 1)->where('tp_is_confirm', 1);
+        $transaksi = $transaksi->paginate($limit);
+        return response()->json([
+            'status' => 'success',
+            'msg' => "Get data successfully",
+            'data' => [
+                'total_items' => $transaksi->total(),
+                'total_page' => $transaksi->lastPage(),
+                'current_page' => $transaksi->currentPage(),
+                'items' => $transaksi->items(),
+            ]
+        ], 200);
+    }
+
+    public function totalPesanan()
+    {
+        $user = User::find(auth()->user()->id);
+        $transaksi = TransaksiPrivat::where('tp_pt_id', $user->trainer->pt_id);
+        $transaksi2 = TransaksiPrivat::where('tp_pt_id', $user->trainer->pt_id);
+        $transaksi3 = TransaksiPrivat::where('tp_pt_id', $user->trainer->pt_id);
+        return  response()->json([
+            'status' => 'success',
+            'msg' => "Get data successfully",
+            'data' => [
+                'total_transaksi' => $transaksi->where("tp_is_cancel", 0)->where("tp_is_done", 1)->where("tp_is_paid", 1)->where('tp_is_confirm', 1)->count(),
+                'total_pesanan_baru' => $transaksi3->where("tp_is_cancel", 0)->where("tp_is_done", 0)->where("tp_is_paid", 1)->where('tp_is_confirm', 0)->count(),
+                'total_on_going' => $transaksi2->where("tp_is_cancel", 0)->where("tp_is_done", 0)->where("tp_is_paid", 1)->where('tp_is_confirm', 1)->count(),
+            ]
+        ], 200);
+    }
+
+    public function totalPendapatan()
+    {
+        date_default_timezone_set('Asia/Jakarta');
+        $user = User::find(auth()->user()->id);
+        $week = date("W", strtotime('now')); // get week
+        $y =    date("Y", strtotime('now')); // get year
+        $firstdate =   date('d-m-Y', strtotime($y . "W" . $week));
+        for ($i = 0; $i <= 6; $i++) {
+            $transaksi = TransaksiPrivat::with('hargaTrainer')->where('tp_pt_id', $user->trainer->pt_id);
+            $transaksi = $transaksi->where("tp_is_cancel", 0)->where("tp_is_done", 1)->where("tp_is_paid", 1)->where('tp_is_confirm', 1);
+            $date = date("Y-m-d", strtotime("+$i day", strtotime($firstdate)));
+            $datetotal = $transaksi->where('tp_tgl_private', $date)->distinct()->count('tp_user_id');
+            $detailCustomer[] = [
+                'name' => date("D", strtotime(" +$i day", strtotime($firstdate))),
+                'tgl' => $date,
+                'total' => $datetotal
+
+            ];
+        }
+        $transaksi = TransaksiPrivat::with('hargaTrainer')->where('tp_pt_id', $user->trainer->pt_id);
+        $transaksi = $transaksi->where("tp_is_cancel", 0)->where("tp_is_done", 1)->where("tp_is_paid", 1)->where('tp_is_confirm', 1);
+        $pendapatan = $transaksi->get()->map(function ($data) {
+            return $data->hargaTrainer->ht_harga;
+        })->sum();
+        $total_customer = $transaksi->distinct()->count('tp_user_id');
+        return response()->json([
+            'status' => 'success',
+            'msg' => "Get data successfully",
+            'data' => [
+                'total_pendapatan' => $pendapatan,
+                'total_customer' => [
+                    'total' => $total_customer,
+                    'detail' => $detailCustomer
+                ],
+            ]
+        ], 200);
+    }
+
+    public function detailPendapatan(Request $request)
+    {
+        $limit = isset($_GET["limit"]) ? $_GET["limit"] : 10;
+        $transaksi = TransaksiPrivat::with('hargaTrainer')->orderBy('tp_id', 'DESC');
+        $user = User::find($request->user()->id);
+        $transaksi = $transaksi->where('tp_pt_id', $user->trainer->pt_id)->where("tp_is_paid", 1);
+
+        if (isset($_GET["query"])) {
+            $transaksi = $transaksi->where("tp_invoice", "like", "%" . $_GET['query'] . "%");
+        }
+        if (isset($request->status)) {
+            if ($request->status == 1) {
+                //semua
+                $transaksi = $transaksi;
+            }
+            if ($request->status == 2) {
+                //minggu ini
+                $transaksi = $transaksi;
+            }
+            if ($request->status == 3) {
+                //bulan ini
+                $transaksi = $transaksi;
+            }
+            if ($request->status == 4) {
+                //tahun ini
+                $transaksi = $transaksi;
+            }
+        }
+        $pendapatan = $transaksi->get()->sum('hargaTrainer.ht_harga');
+        $transaksi = $transaksi->paginate($limit);
+        return response()->json([
+            'status' => 'success',
+            'msg' => "Get data successfully",
+            'data' => [
+                'total_pendapatan' => $pendapatan,
+                'total_items' => $transaksi->total(),
+                'total_page' => $transaksi->lastPage(),
+                'current_page' => $transaksi->currentPage(),
+                'items' => $transaksi->items(),
+            ]
+        ], 200);
+    }
+
+    public function detailPerformaTrans(Request $request)
+    {
+        $limit = isset($_GET["limit"]) ? $_GET["limit"] : 10;
+        $transaksi = TransaksiPrivat::with('hargaTrainer')->orderBy('tp_id', 'DESC');
+        $user = User::find($request->user()->id);
+        $transaksi = $transaksi->where('tp_pt_id', $user->trainer->pt_id)->where("tp_is_paid", 1);
+
+        if (isset($_GET["query"])) {
+            $transaksi = $transaksi->where("tp_invoice", "like", "%" . $_GET['query'] . "%");
+        }
+        if (isset($request->status)) {
+            if ($request->status == 1) {
+                //minggu ini
+                $transaksi = $transaksi;
+            }
+            if ($request->status == 2) {
+                //bulan ini
+                $transaksi = $transaksi;
+            }
+            if ($request->status == 3) {
+                //tahun ini
+                $transaksi = $transaksi;
+            }
+        }
+        $paginate = $transaksi->paginate($limit);
+
+        return response()->json([
+            'status' => 'success',
+            'msg' => "Get data successfully",
+            'data' => [
+                'total_items' => $paginate->total(),
+                'total_page' => $paginate->lastPage(),
+                'current_page' => $paginate->currentPage(),
+                'items' => $paginate->items(),
+            ]
+        ], 200);
+    }
+
+    public function detailPerformaBar(Request $request)
+    {
+        date_default_timezone_set('Asia/Jakarta');
+        $status=isset($request->status)?$request->status:1;
+        $user = User::find(auth()->user()->id);
+        if ($status) {
+            if ($status == 1) {
+                //minggu ini
+                $week = date("W", strtotime('now')); // get week
+                $y =    date("Y", strtotime('now')); // get year
+                $firstdate =   date('d-m-Y', strtotime($y . "W" . $week));
+                for ($i = 0; $i <= 6; $i++) {
+                    $transaksi = TransaksiPrivat::with('hargaTrainer')->where('tp_pt_id', $user->trainer->pt_id);
+                    $transaksi = $transaksi->where("tp_is_cancel", 0)->where("tp_is_done", 1)->where("tp_is_paid", 1)->where('tp_is_confirm', 1);
+                    $date = date("Y-m-d", strtotime("+$i day", strtotime($firstdate)));
+                    $datetotal = $transaksi->where('tp_tgl_private', $date)->distinct()->count('tp_user_id');
+                    $detailCustomer[] = [
+                        'name' => date("D", strtotime(" +$i day", strtotime($firstdate))),
+                        'tgl' => $date,
+                        'total' => $datetotal
+
+                    ];
+                }
+            }
+            if ($status == 2) {
+                //bulan ini
+                $month = date("t", strtotime('now'));
+                $alldatethismonth = range(1, $month);
+                foreach($alldatethismonth as $date){
+                    $date=date("Y-m-").$date;
+                    $transaksi = TransaksiPrivat::with('hargaTrainer')->where('tp_pt_id', $user->trainer->pt_id);
+                    $transaksi = $transaksi->where("tp_is_cancel", 0)->where("tp_is_done", 1)->where("tp_is_paid", 1)->where('tp_is_confirm', 1);
+                    $datetotal = $transaksi->where('tp_tgl_private', $date)->distinct()->count('tp_user_id');
+                    $detailCustomer[] = [
+                        'name' => date("d", strtotime($date)),
+                        'tgl' => $date,
+                        'total' => $datetotal
+
+                    ];
+                }
+            }
+            if ($status == 3) {
+                //tahun ini
+                $date=date("Y-m-d", strtotime('now'));
+                for ($i=0; $i < 12; $i++) { 
+                    $transaksi = TransaksiPrivat::with('hargaTrainer')->where('tp_pt_id', $user->trainer->pt_id);
+                    $transaksi = $transaksi->where("tp_is_cancel", 0)->where("tp_is_done", 1)->where("tp_is_paid", 1)->where('tp_is_confirm', 1);
+                    $datetotal = $transaksi->where('tp_tgl_private','LIKE', "%".$date."%")->distinct()->count('tp_user_id');
+                    $detailCustomer[] = [
+                        'name' => date("M", strtotime($date)),
+                        'tgl' => $date,
+                        'total' => $datetotal
+                    ];
+                    $date=date('Y-m',strtotime("+1 month",strtotime($date)));
+                }
+            }
+        }
+
+        $transaksi = TransaksiPrivat::with('hargaTrainer')->where('tp_pt_id', $user->trainer->pt_id);
+        $transaksi = $transaksi->where("tp_is_cancel", 0)->where("tp_is_done", 1)->where("tp_is_paid", 1)->where('tp_is_confirm', 1);
+        $total_customer = $transaksi->distinct()->count('tp_user_id');
+        return response()->json([
+            'status' => 'success',
+            'msg' => "Get data successfully",
+            'data' => [
+                'total' => $total_customer,
+                'detail' => $detailCustomer
             ]
         ], 200);
     }
