@@ -132,7 +132,9 @@ class TransaksiPrivatController extends Controller
         $pendapatan = $transaksi->get()->map(function ($data) {
             return $data->hargaTrainer->ht_harga;
         })->sum();
-        $total_customer = $transaksi->distinct()->count('tp_user_id');
+        $transaksi = TransaksiPrivat::with('hargaTrainer')->where('tp_pt_id', $user->trainer->pt_id);
+        $transaksi = $transaksi->where("tp_is_cancel", 0)->where("tp_is_done", 1)->where("tp_is_paid", 1)->where('tp_is_confirm', 1);
+        $total_customer = $transaksi->wherein('tp_tgl_private', array_map(function($data){return $data['tgl'];},$detailCustomer))->distinct()->count('tp_user_id');
         return response()->json([
             'status' => 'success',
             'msg' => "Get data successfully",
@@ -196,9 +198,6 @@ class TransaksiPrivatController extends Controller
         $user = User::find($request->user()->id);
         $transaksi = $transaksi->where('tp_pt_id', $user->trainer->pt_id)->where("tp_is_paid", 1);
 
-        if (isset($_GET["query"])) {
-            $transaksi = $transaksi->where("tp_invoice", "like", "%" . $_GET['query'] . "%");
-        }
         if (isset($request->status)) {
             if ($request->status == 1) {
                 //minggu ini
@@ -230,7 +229,7 @@ class TransaksiPrivatController extends Controller
     public function detailPerformaBar(Request $request)
     {
         date_default_timezone_set('Asia/Jakarta');
-        $status=isset($request->status)?$request->status:1;
+        $status = isset($request->status) ? $request->status : 1;
         $user = User::find(auth()->user()->id);
         if ($status) {
             if ($status == 1) {
@@ -255,8 +254,8 @@ class TransaksiPrivatController extends Controller
                 //bulan ini
                 $month = date("t", strtotime('now'));
                 $alldatethismonth = range(1, $month);
-                foreach($alldatethismonth as $date){
-                    $date=date("Y-m-").$date;
+                foreach ($alldatethismonth as $date) {
+                    $date = date("Y-m-") . sprintf("%02d", $date);
                     $transaksi = TransaksiPrivat::with('hargaTrainer')->where('tp_pt_id', $user->trainer->pt_id);
                     $transaksi = $transaksi->where("tp_is_cancel", 0)->where("tp_is_done", 1)->where("tp_is_paid", 1)->where('tp_is_confirm', 1);
                     $datetotal = $transaksi->where('tp_tgl_private', $date)->distinct()->count('tp_user_id');
@@ -270,24 +269,24 @@ class TransaksiPrivatController extends Controller
             }
             if ($status == 3) {
                 //tahun ini
-                $date=date("Y-m-d", strtotime('now'));
-                for ($i=0; $i < 12; $i++) { 
+                $date = date("Y-m-d", strtotime('now'));
+                for ($i = 0; $i < 12; $i++) {
                     $transaksi = TransaksiPrivat::with('hargaTrainer')->where('tp_pt_id', $user->trainer->pt_id);
                     $transaksi = $transaksi->where("tp_is_cancel", 0)->where("tp_is_done", 1)->where("tp_is_paid", 1)->where('tp_is_confirm', 1);
-                    $datetotal = $transaksi->where('tp_tgl_private','LIKE', "%".$date."%")->distinct()->count('tp_user_id');
+                    $datetotal = $transaksi->where('tp_tgl_private', 'LIKE', "%" . $date . "%")->distinct()->count('tp_user_id');
                     $detailCustomer[] = [
                         'name' => date("M", strtotime($date)),
                         'tgl' => $date,
                         'total' => $datetotal
                     ];
-                    $date=date('Y-m',strtotime("+1 month",strtotime($date)));
+                    $date = date('Y-m', strtotime("+1 month", strtotime($date)));
                 }
             }
         }
 
         $transaksi = TransaksiPrivat::with('hargaTrainer')->where('tp_pt_id', $user->trainer->pt_id);
         $transaksi = $transaksi->where("tp_is_cancel", 0)->where("tp_is_done", 1)->where("tp_is_paid", 1)->where('tp_is_confirm', 1);
-        $total_customer = $transaksi->distinct()->count('tp_user_id');
+        $total_customer = $transaksi->wherein('tp_tgl_private', array_map(function($data){return $data['tgl'];},$detailCustomer))->distinct()->count('tp_user_id');
         return response()->json([
             'status' => 'success',
             'msg' => "Get data successfully",
@@ -295,6 +294,28 @@ class TransaksiPrivatController extends Controller
                 'total' => $total_customer,
                 'detail' => $detailCustomer
             ]
+        ], 200);
+    }
+
+    public function transbymonth(Request $request)
+    {
+        $month = date("t", strtotime($request['date']));
+        $alldatethismonth = range(1, $month);
+        $data=[];
+        $user = User::find(auth()->user()->id);
+        foreach ($alldatethismonth as $date) {
+            $dates = date("Y-m-") . sprintf("%02d", $date);
+            $transaksi = TransaksiPrivat::with('hargaTrainer')->where('tp_pt_id', $user->trainer->pt_id)->where('tp_tgl_private',$dates)->get();
+            $data[]=[
+                'tgl'=>date('d-m-Y',strtotime($dates)),
+                'name'=>sprintf("%02d", $date),
+                'data'=>$transaksi
+            ];
+        }
+        return response()->json([
+            'status' => 'success',
+            'msg' => "Get data successfully",
+            'data' => $data
         ], 200);
     }
 

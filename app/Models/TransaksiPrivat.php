@@ -34,7 +34,7 @@ class TransaksiPrivat extends Model
         "tp_meet_url"
     ];
 
-    protected $appends = ["tp_status", "tp_jam_private_end","tp_second_diff"];
+    protected $appends = ["tp_status", "tp_jam_private_end","tp_second_diff","tp_date_private_end"];
 
     public function trainer()
     {
@@ -76,6 +76,12 @@ class TransaksiPrivat extends Model
     {
         $ht = HargaTrainer::find($this->tp_ht_id);
         return date('H:i', strtotime(Date($this->tp_jam_private) . ' ' . '+ ' . $ht->ht_waktu . ' minutes'));
+    }
+    
+    public function getTpDatePrivateEndAttribute()
+    {
+        $ht = HargaTrainer::find($this->tp_ht_id);
+        return date('Y-m-d H:i:s', strtotime(Date($this->tp_tgl_private." ".$this->tp_jam_private) . ' ' . '+ ' . $ht->ht_waktu . ' minutes'));
     }
 
     /*
@@ -135,7 +141,7 @@ class TransaksiPrivat extends Model
     {
         // $date1 = new DateTime($this->tp_tgl_private.' '.$this->tp_jam_private.':00');
         $date1=new DateTime();
-        $date2 = new DateTime($this->tp_tgl_private.' '.$this->getTpJamPrivateEndAttribute().':00');
+        $date2 = new DateTime($this->getTpDatePrivateEndAttribute());
         $diff_second = $date2->getTimestamp()-$date1->getTimestamp();
         return $diff_second;
     }
