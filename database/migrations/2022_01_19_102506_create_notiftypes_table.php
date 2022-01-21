@@ -15,7 +15,7 @@ class CreateNotiftypesTable extends Migration
     {
         Schema::create('legion_notiftypes', function (Blueprint $table) {
             $table->id('notiftypes_id');
-            $table->string('notiftypes_code');
+            $table->string('notiftypes_code')->unique();
             $table->string('notiftypes_title');
             $table->string('notiftypes_body');
             $table->string('notiftypes_params')->nullable();

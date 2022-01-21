@@ -72,6 +72,18 @@ class NotiftypeSeeder extends Seeder
                 'notiftypes_body' => "Selamat anda telah berhasil menyelesaikan private trainer, jangan lupa untuk memperi review pada trainer anda. ",
                 'notiftypes_icon' => "",
             ],
+            [
+                'notiftypes_code' => "priv_baru",
+                'notiftypes_title' => "Pesanan Baru",
+                'notiftypes_body' => "Ada pesanan privat trainer baru. segera konfirmasi pesanan jika anda ingin mengambil pesanan ini.",
+                'notiftypes_icon' => "",
+            ],
+            [
+                'notiftypes_code' => "priv_mulai_pt",
+                'notiftypes_title' => "Training",
+                'notiftypes_body' => "Private anda akan segera dimulai dalam 15 menit lagi. Persiapkan diri anda untuk segera memulai private",
+                'notiftypes_icon' => "",
+            ],
         ]);
     }
 }
