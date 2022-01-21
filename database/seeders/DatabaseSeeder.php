@@ -30,5 +30,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ProdukTipeSeeder::class);
         $this->call(KategoriHargaTrainerSeeder::class);
         $this->call(DataMasterSeeder::class);
+        $this->call(NotiftypeSeeder::class);
     }
 }

@@ -22,6 +22,7 @@ class CreateCustomersTable extends Migration
             $table->dateTime('customer_tanggal_lahir')->nullable();
             $table->string('customer_gender')->nullable();
             $table->string('customer_image')->nullable();
+            $table->string('customer_is_delete')->default(false);
             $table->dateTime("customer_create_at")->useCurrent();
             $table->dateTime("customer_update_at")->useCurrent()->useCurrentOnUpdate();
         });

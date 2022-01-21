@@ -134,7 +134,9 @@ class TransaksiPrivatController extends Controller
         })->sum();
         $transaksi = TransaksiPrivat::with('hargaTrainer')->where('tp_pt_id', $user->trainer->pt_id);
         $transaksi = $transaksi->where("tp_is_cancel", 0)->where("tp_is_done", 1)->where("tp_is_paid", 1)->where('tp_is_confirm', 1);
-        $total_customer = $transaksi->wherein('tp_tgl_private', array_map(function($data){return $data['tgl'];},$detailCustomer))->distinct()->count('tp_user_id');
+        $total_customer = $transaksi->wherein('tp_tgl_private', array_map(function ($data) {
+            return $data['tgl'];
+        }, $detailCustomer))->distinct()->count('tp_user_id');
         return response()->json([
             'status' => 'success',
             'msg' => "Get data successfully",
@@ -286,7 +288,9 @@ class TransaksiPrivatController extends Controller
 
         $transaksi = TransaksiPrivat::with('hargaTrainer')->where('tp_pt_id', $user->trainer->pt_id);
         $transaksi = $transaksi->where("tp_is_cancel", 0)->where("tp_is_done", 1)->where("tp_is_paid", 1)->where('tp_is_confirm', 1);
-        $total_customer = $transaksi->wherein('tp_tgl_private', array_map(function($data){return $data['tgl'];},$detailCustomer))->distinct()->count('tp_user_id');
+        $total_customer = $transaksi->wherein('tp_tgl_private', array_map(function ($data) {
+            return $data['tgl'];
+        }, $detailCustomer))->distinct()->count('tp_user_id');
         return response()->json([
             'status' => 'success',
             'msg' => "Get data successfully",
@@ -301,15 +305,15 @@ class TransaksiPrivatController extends Controller
     {
         $month = date("t", strtotime($request['date']));
         $alldatethismonth = range(1, $month);
-        $data=[];
+        $data = [];
         $user = User::find(auth()->user()->id);
         foreach ($alldatethismonth as $date) {
             $dates = date("Y-m-") . sprintf("%02d", $date);
-            $transaksi = TransaksiPrivat::with('hargaTrainer')->where('tp_pt_id', $user->trainer->pt_id)->where('tp_tgl_private',$dates)->get();
-            $data[]=[
-                'tgl'=>date('d-m-Y',strtotime($dates)),
-                'name'=>sprintf("%02d", $date),
-                'data'=>$transaksi
+            $transaksi = TransaksiPrivat::with('hargaTrainer')->where('tp_pt_id', $user->trainer->pt_id)->where('tp_tgl_private', $dates)->get();
+            $data[] = [
+                'tgl' => date('d-m-Y', strtotime($dates)),
+                'name' => sprintf("%02d", $date),
+                'data' => $transaksi
             ];
         }
         return response()->json([
@@ -342,10 +346,10 @@ class TransaksiPrivatController extends Controller
                 $request['tp_invoice'] = "INV" . $request->user()->id . time();
                 $request['tp_user_id'] = $request->user()->id;
                 $request["tp_token_payment"] = md5(uniqid($request["tp_invoice"], true));
+                $request["tp_harga"] = $ht->harga;
                 $generateUrl = $this->generateUrl([
                     'tp_token_payment' => $request['tp_token_payment'],
-                    // 'amount' => $ht->ht_harga,
-                    'amount' => 1,
+                    'amount' => $ht->ht_harga,
                     'inv' => $request['tp_invoice']
                 ]);
                 $request["tp_generate_url"] = isset($generateUrl['generatedUrl']) ? $generateUrl['generatedUrl'] : '';
@@ -412,6 +416,7 @@ class TransaksiPrivatController extends Controller
     {
         $transaksi = TransaksiPrivat::firstWhere('tp_token_payment', $id);
         $transaksi->tp_is_paid = true;
+        $transaksi->tp_tgl_pembayaran = Date('Y-m-d');
         $header = array(
             "content-type: application/json"
         );
@@ -616,6 +621,13 @@ uDl3e11e6es212d2FvVhFntO1lFGjvB8e2GcWZ0XpKSsAUhm1B4=
         $transaksi = TransaksiPrivat::with($this->relation())->find($id);
         $transaksi->tp_is_cancel = true;
         $transaksi->save();
+        $notifcontroller = new NotifController();
+        $req = new Request();
+        $req->code = "priv_ditolak";
+        $req->click_action = "";
+        $req->params = [];
+        $req->user_id = $transaksi->tp_user_id;
+        $notifcontroller->create_user_tertentu($req);
         return  response()->json([
             'status' => 'success',
             'msg' => "Get data successfully",

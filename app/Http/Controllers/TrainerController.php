@@ -10,7 +10,7 @@ class TrainerController extends Controller
     public function index(Request $request)
     {
         $limit = isset($_GET["limit"]) ? $_GET["limit"] : 10;
-        $trainer = trainer::where("pt_id", "!=", 0);
+        $trainer = trainer::where("pt_id", "!=", 0)->where('pt_is_delete',0);
         if (isset($_GET['except'])) {
             $trainer = $trainer->where("pt_id", "!=", $_GET['except']);
         }

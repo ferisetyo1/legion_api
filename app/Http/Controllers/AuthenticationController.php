@@ -48,7 +48,7 @@ class AuthenticationController extends Controller
                 return response()->json($respon, 401);
             }
 
-            $user = User::where('email', $request->email)->where('role', $role)->first();
+            $user = User::where('email', $request->email)->where('is_delete',0)->where('role', $role)->first();
             if (!Hash::check($request->password, $user->password, [])) {
                 throw new \Exception('Error in Login');
             }

@@ -17,7 +17,7 @@ class HargaTrainerSeeder extends Seeder
         HargaTrainer::insert([
             [
                 'ht_pt_id'=>201,
-                'ht_harga'=>160000,
+                'ht_harga'=>1,
                 'ht_waktu'=>60,
                 'ht_kht_id'=>1
             ],

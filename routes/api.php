@@ -11,6 +11,7 @@ use App\Http\Controllers\DataMasterController;
 use App\Http\Controllers\GymController;
 use App\Http\Controllers\HargaTrainerController;
 use App\Http\Controllers\JadwalTrainerController;
+use App\Http\Controllers\NotifController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\ProdukKategoriController;
@@ -86,6 +87,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('transaksiprivate/detailperformabar',  [TransaksiPrivatController::class, 'detailPerformaBar']);
     Route::get('transaksiprivate/transbymonth',  [TransaksiPrivatController::class, 'transbymonth']);
     Route::get('transaksiprivate/detailperformatrans',  [TransaksiPrivatController::class, 'detailPerformaTrans']);
+    Route::post('sendnotif',  [NotifController::class, 'create']);
     Route::get('cart',  [CartController::class, 'index']);
     Route::post('cart/add',  [CartController::class, 'create']);
     Route::post('cart/edit',  [CartController::class, 'update']);

@@ -21,11 +21,13 @@ class CreateTransaksiPrivatsTable extends Migration
             $table->integer('tp_ap_id')->nullable();
             $table->string('tp_invoice');
             $table->string('tp_tgl_private');
+            $table->string('tp_tgl_pembayaran')->nullable();
             $table->string('tp_jam_private');
             $table->string('tp_nama_gym')->nullable();
             $table->string('tp_token_payment');
             $table->string('tp_metode_pembayaran')->nullable();
             $table->string('tp_waktu_expired');
+            $table->integer('tp_harga')->default(0);
             $table->boolean('tp_is_paid')->default(false);
             $table->boolean('tp_is_confirm')->default(false);
             $table->boolean('tp_is_mulai')->default(false);

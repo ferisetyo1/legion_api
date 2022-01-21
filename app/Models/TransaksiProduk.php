@@ -20,6 +20,7 @@ class TransaksiProduk extends Model
         'tp_no_resi',
         'tp_nama_gym',
         'tp_is_paid',
+        'tp_cart_temp',
         'tp_is_confirm',
         'tp_is_dikemas',
         'tp_is_cancel',

@@ -26,6 +26,7 @@ class CreateTrainersTable extends Migration
             $table->text("pt_desc")->nullable();
             $table->string("pt_kota")->nullable();
             $table->text("pt_alamat")->nullable();
+            $table->text("pt_is_delete")->default(false);
             $table->dateTime("pt_create_at")->useCurrent();
             $table->dateTime("pt_update_at")->useCurrent()->useCurrentOnUpdate();
         });

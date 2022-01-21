@@ -25,6 +25,7 @@ class CreateGymsTable extends Migration
             $table->text("gym_desc");
             // $table->string("gym_image");
             $table->string("gym_kota");
+            $table->boolean('gym_is_delete')->default(false);
             $table->dateTime("gym_create_at")->useCurrent();
             $table->dateTime("gym_update_at")->useCurrent()->useCurrentOnUpdate();
         });

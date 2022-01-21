@@ -20,7 +20,8 @@ class trainer extends Model
         'pt_desc',
         'pt_image',
         'pt_kota',
-        'pt_alamat'
+        'pt_alamat',
+        'pt_is_delete'
     ];
     protected $appends = ["pt_star_count", "pt_default_harga"];
 

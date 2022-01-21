@@ -20,6 +20,7 @@ class gym extends Model
         'gym_isActive',
         'gym_status',
         'gym_desc',
+        'gym_is_delete',
     ];
 
     protected $appends = ["gym_star_count","gym_image"];

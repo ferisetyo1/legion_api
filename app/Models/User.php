@@ -24,6 +24,7 @@ class User extends Authenticatable
         'password',
         'free_password',
         'role',
+        'is_delete',
     ];
     public $timestamps = false;
     /**
