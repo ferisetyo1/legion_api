@@ -81,7 +81,7 @@ class NotifController extends Controller
         $title=$notiftype->notiftypes_title;
         $body=isEmpty($notiftype->notiftypes_params) ? $notiftype->notiftypes_body : vsprintf($notiftype->notiftypes_body, $request->params);
         notif::create([
-            'notif_user_id' => auth()->user()->id,
+            'notif_user_id' => $user->id,
             'notif_type_id' => $notiftype->notiftypes_id,
             'notif_body' => $body,
             'notif_title' => $title,
