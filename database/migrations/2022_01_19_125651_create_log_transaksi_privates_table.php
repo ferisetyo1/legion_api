@@ -20,8 +20,8 @@ class CreateLogTransaksiPrivatesTable extends Migration
             $table->string('log_title');
             $table->text('log_body');
             $table->boolean('log_red_flags')->default(false);
-            $table->dateTime("poins_create_at")->useCurrent();
-            $table->dateTime("poins_update_at")->useCurrent()->useCurrentOnUpdate();
+            $table->dateTime("log_create_at")->useCurrent();
+            $table->dateTime("log_update_at")->useCurrent()->useCurrentOnUpdate();
         });
     }
 

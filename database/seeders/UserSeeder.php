@@ -20,21 +20,21 @@ class UserSeeder extends Seeder
         User::insert([
             [
                 'email' => 'customer@gmail.com',
-                'name' => 'feri',
+                'name' => 'Customernya Feri',
                 'password' => Hash::make('12345678'),
                 'role' => 'customer',
                 'foto' => $faker->imageUrl(300,300,'person'),
             ],
             [
                 'email' => 'trainer@gmail.com',
-                'name' => 'feri',
+                'name' => 'Trainernya Feri',
                 'password' => Hash::make('12345678'),
                 'role' => 'trainer',
                 'foto' => $faker->imageUrl(300,300,'person'),
             ],
             [
                 'email' => 'gymadmin@gmail.com',
-                'name' => 'feri',
+                'name' => 'Gymnya Feri',
                 'password' => Hash::make('12345678'),
                 'role' => 'gym',
                 'foto' => $faker->imageUrl(300,300,'person'),

@@ -13,20 +13,38 @@ use function PHPUnit\Framework\isEmpty;
 
 class NotifController extends Controller
 {
+    public function index(Request $request)
+    {
+        $notif = notif::with('type')->where('notif_user_id', auth()->user()->id)->paginate(10);
+        return response()->json(
+            [
+                'status' => 'success',
+                'msg' => "Success",
+                'data' => [
+                    'total_items' => $notif->total(),
+                    'total_page' => $notif->lastPage(),
+                    'current_page' => $notif->currentPage(),
+                    'items' => $notif->items()
+                ]
+            ],
+            200
+        );
+    }
+
     public function create(Request $request)
     {
         $notiftype = notiftype::firstWhere('notiftypes_code', $request->code);
 
         if (auth()->user()->role == "trainer") {
             $click_action = "https://legionptapps.com" . $request->click_action;
-        } else if (auth()->user()->role == "trainer") {
+        } else if (auth()->user()->role == "customer") {
             $click_action = "https://legioncustapps.com" . $request->click_action;
         } else {
             $click_action = $request->click_action;
         }
 
-        $title=$notiftype->notiftypes_title;
-        $body=isEmpty($notiftype->notiftypes_params) ? $notiftype->notiftypes_body : vsprintf($notiftype->notiftypes_body, $request->params);
+        $title = $notiftype->notiftypes_title;
+        $body = isEmpty($notiftype->notiftypes_params) ? $notiftype->notiftypes_body : vsprintf($notiftype->notiftypes_body, $request->params);
         notif::create([
             'notif_user_id' => auth()->user()->id,
             'notif_type_id' => $notiftype->notiftypes_id,
@@ -39,8 +57,8 @@ class NotifController extends Controller
             "content-type: application/json",
             "Authorization: key=AAAAfEW--iw:APA91bFXP8FFYMwnitXBDAu8N6U6t5iuiOzxIxcbx8FgK9uYxy3nsBDJENqEZmp2o4kW8SeqldEtX8s1DlRgHEWNy4_623P_pja4iDVdjY3zzqf1Wshaf-rlwIwhAzBa_ICGZ27n9iPg"
         );
-        $datajson=[];
-        $tokens=tokencloudmsg::where("token_user_id",auth()->user()->id)->get();
+        $datajson = [];
+        $tokens = tokencloudmsg::where("token_user_id", auth()->user()->id)->get();
         foreach ($tokens as $key => $value) {
             $data = [
                 "notification" => [
@@ -50,17 +68,17 @@ class NotifController extends Controller
                 ],
                 "to" => $value->token_value
             ];
-            $json=$this->do_curl("https://fcm.googleapis.com/fcm/send", json_encode($data), $header);
-            $datajson[]=json_decode($json);
+            $json = $this->do_curl("https://fcm.googleapis.com/fcm/send", json_encode($data), $header);
+            $datajson[] = json_decode($json);
         }
-        
+
         return response()->json(
             [
                 'status' => 'success',
                 'msg' => "Success",
                 'data' => $datajson,
-                'token'=>$tokens,
-                'auth()->user()->id'=>auth()->user()->id
+                'token' => $tokens,
+                'auth()->user()->id' => auth()->user()->id
             ],
             200
         );
@@ -69,7 +87,7 @@ class NotifController extends Controller
     public function create_user_tertentu(Request $request)
     {
         $notiftype = notiftype::firstWhere('notiftypes_code', $request->code);
-        $user=User::find($request->user_id);
+        $user = User::find($request->user_id);
         if ($user->role == "trainer") {
             $click_action = "https://legionptapps.com" . $request->click_action;
         } else if ($user->role == "trainer") {
@@ -78,8 +96,8 @@ class NotifController extends Controller
             $click_action = $request->click_action;
         }
 
-        $title=$notiftype->notiftypes_title;
-        $body=isEmpty($notiftype->notiftypes_params) ? $notiftype->notiftypes_body : vsprintf($notiftype->notiftypes_body, $request->params);
+        $title = $notiftype->notiftypes_title;
+        $body = isEmpty($notiftype->notiftypes_params) ? $notiftype->notiftypes_body : vsprintf($notiftype->notiftypes_body, $request->params);
         notif::create([
             'notif_user_id' => $user->id,
             'notif_type_id' => $notiftype->notiftypes_id,
@@ -92,8 +110,8 @@ class NotifController extends Controller
             "content-type: application/json",
             "Authorization: key=AAAAfEW--iw:APA91bFXP8FFYMwnitXBDAu8N6U6t5iuiOzxIxcbx8FgK9uYxy3nsBDJENqEZmp2o4kW8SeqldEtX8s1DlRgHEWNy4_623P_pja4iDVdjY3zzqf1Wshaf-rlwIwhAzBa_ICGZ27n9iPg"
         );
-        $datajson=[];
-        $tokens=tokencloudmsg::where("token_user_id",$user->id)->get();
+        $datajson = [];
+        $tokens = tokencloudmsg::where("token_user_id", $user->id)->get();
         foreach ($tokens as $key => $value) {
             $data = [
                 "notification" => [
@@ -103,17 +121,17 @@ class NotifController extends Controller
                 ],
                 "to" => $value->token_value
             ];
-            $json=$this->do_curl("https://fcm.googleapis.com/fcm/send", json_encode($data), $header);
-            $datajson[]=json_decode($json);
+            $json = $this->do_curl("https://fcm.googleapis.com/fcm/send", json_encode($data), $header);
+            $datajson[] = json_decode($json);
         }
-        
+
         return response()->json(
             [
                 'status' => 'success',
                 'msg' => "Success",
                 'data' => $datajson,
-                'token'=>$tokens,
-                'auth()->user()->id'=>$user->id
+                'token' => $tokens,
+                'auth()->user()->id' => $user->id
             ],
             200
         );

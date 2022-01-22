@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\HargaTrainer;
+use App\Models\notif;
+use App\Models\notiftype;
 use App\Models\TransaksiPrivat;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -346,7 +348,7 @@ class TransaksiPrivatController extends Controller
                 $request['tp_invoice'] = "INV" . $request->user()->id . time();
                 $request['tp_user_id'] = $request->user()->id;
                 $request["tp_token_payment"] = md5(uniqid($request["tp_invoice"], true));
-                $request["tp_harga"] = $ht->harga;
+                $request["tp_harga"] = $ht->ht_harga;
                 $generateUrl = $this->generateUrl([
                     'tp_token_payment' => $request['tp_token_payment'],
                     'amount' => $ht->ht_harga,
@@ -414,7 +416,7 @@ class TransaksiPrivatController extends Controller
 
     public function updatePaid($id)
     {
-        $transaksi = TransaksiPrivat::firstWhere('tp_token_payment', $id);
+        $transaksi = TransaksiPrivat::with('trainer')->Where('tp_token_payment', $id)->first();
         $transaksi->tp_is_paid = true;
         $transaksi->tp_tgl_pembayaran = Date('Y-m-d');
         $header = array(
@@ -442,6 +444,15 @@ class TransaksiPrivatController extends Controller
             $json['data']['response']['paymentType']['name'] : null;
         $transaksi->tp_metode_pembayaran = $response;
         $transaksi->save();
+        $notifcontroller = new NotifController();
+        $req = new Request();
+        $req->code = "priv_baru";
+        $req->click_action = '/'.'detailPemesananTrainer/' . $transaksi->tp_id;
+        $req->params = [];
+        $req->user_id = $transaksi->trainer->pt_user_id;
+        $notiftype = notiftype::firstWhere('notiftypes_code', $req->code);
+        $check = notif::Where('notif_click_action', 'Like', "%" . $req->click_action . "%")->where('notif_type_id', $notiftype->notiftypes_id)->first() == null;
+        if ($check) $notifcontroller->create_user_tertentu($req);
         header("Location: https://nutrition.thelegion.co.id/");
         die();
     }
@@ -608,6 +619,13 @@ uDl3e11e6es212d2FvVhFntO1lFGjvB8e2GcWZ0XpKSsAUhm1B4=
         $transaksi = TransaksiPrivat::with($this->relation())->find($id);
         $transaksi->tp_is_confirm = true;
         $transaksi->save();
+        $notifcontroller = new NotifController();
+        $req = new Request();
+        $req->code = "priv_dikonfirmasi";
+        $req->click_action = "";
+        $req->params = [];
+        $req->user_id = $transaksi->tp_user_id;
+        $notifcontroller->create_user_tertentu($req);
         return  response()->json([
             'status' => 'success',
             'msg' => "Get data successfully",

@@ -19,4 +19,9 @@ class notif extends Model
         'notif_click_action',
         'notif_is_read',
     ];
+
+    public function type()
+    {
+        return $this->belongsTo(notiftype::class,"notif_type_id","notiftypes_id");
+    }
 }

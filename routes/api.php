@@ -15,6 +15,7 @@ use App\Http\Controllers\NotifController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\ProdukKategoriController;
+use App\Http\Controllers\TokencloudmsgController;
 use App\Http\Controllers\TrainerController;
 use App\Http\Controllers\TransaksiPrivatController;
 use App\Http\Controllers\TransaksiProdukController;
@@ -87,7 +88,9 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('transaksiprivate/detailperformabar',  [TransaksiPrivatController::class, 'detailPerformaBar']);
     Route::get('transaksiprivate/transbymonth',  [TransaksiPrivatController::class, 'transbymonth']);
     Route::get('transaksiprivate/detailperformatrans',  [TransaksiPrivatController::class, 'detailPerformaTrans']);
+    Route::post('notif/createtoken',  [TokencloudmsgController::class, 'create']);
     Route::post('sendnotif',  [NotifController::class, 'create']);
+    Route::get('notif/show',  [NotifController::class, 'index']);
     Route::get('cart',  [CartController::class, 'index']);
     Route::post('cart/add',  [CartController::class, 'create']);
     Route::post('cart/edit',  [CartController::class, 'update']);
