@@ -15,11 +15,24 @@ class NotifController extends Controller
 {
     public function FunctionName(Request $request)
     {
-        $req= new Request();
-        $req->code="priv_selese";
-        $req->click_action="";
-        $req->params="";
+        $req = new Request();
+        $req->code = "priv_selese";
+        $req->click_action = "";
+        $req->params = [];
         $this->createtoAll($request);
+
+        // $params="invoice,harga";
+        // $params=str_split($params);
+        // foreach ($params as $key => $value) {
+        //     <label>$value</label>
+        //     <input name="params[]">
+        // }
+
+        // <label>invoice</label>
+        //     <input name="params[]">
+        // <label>harga</label>
+        //     <input name="params[]">
+        //     $req->params=$request->params
     }
 
     public function index(Request $request)
@@ -157,6 +170,14 @@ class NotifController extends Controller
             $users = User::where('role', $to)->get();
         }
 
+        $title = $notiftype->notiftypes_title;
+        $body = isEmpty($notiftype->notiftypes_params) ? $notiftype->notiftypes_body : vsprintf($notiftype->notiftypes_body, $request->params);
+
+        $datajson = [];
+        $header = array(
+            "content-type: application/json",
+            "Authorization: key=AAAAfEW--iw:APA91bFXP8FFYMwnitXBDAu8N6U6t5iuiOzxIxcbx8FgK9uYxy3nsBDJENqEZmp2o4kW8SeqldEtX8s1DlRgHEWNy4_623P_pja4iDVdjY3zzqf1Wshaf-rlwIwhAzBa_ICGZ27n9iPg"
+        );
         foreach ($users as $key => $user) {
             if ($user->role == "trainer") {
                 $click_action = "https://legionptapps.com" . $request->click_action;
@@ -165,33 +186,29 @@ class NotifController extends Controller
             } else {
                 $click_action = $request->click_action;
             }
+
+            notif::create([
+                'notif_user_id' => $user->id,
+                'notif_type_id' => $notiftype->notiftypes_id,
+                'notif_body' => $body,
+                'notif_title' => $title,
+                'notif_click_action' => $click_action,
+            ]);
+            
+            $tokens = tokencloudmsg::where("token_user_id", $user->id)->get();
+            foreach ($tokens as $key => $value) {
+                $data = [
+                    "notification" => [
+                        "title" => $title,
+                        "body" => $body,
+                        "click_action" => $click_action
+                    ],
+                    "to" => $value->token_value
+                ];
+                $json = $this->do_curl("https://fcm.googleapis.com/fcm/send", json_encode($data), $header);
+                $datajson[] = json_decode($json);
+            }
         }
-
-        $title = $notiftype->notiftypes_title;
-        $body = isEmpty($notiftype->notiftypes_params) ? $notiftype->notiftypes_body : vsprintf($notiftype->notiftypes_body, $request->params);
-        notif::create([
-            'notif_user_id' => $user->id,
-            'notif_type_id' => $notiftype->notiftypes_id,
-            'notif_body' => $body,
-            'notif_title' => $title,
-            'notif_click_action' => $click_action,
-        ]);
-
-        $header = array(
-            "content-type: application/json",
-            "Authorization: key=AAAAfEW--iw:APA91bFXP8FFYMwnitXBDAu8N6U6t5iuiOzxIxcbx8FgK9uYxy3nsBDJENqEZmp2o4kW8SeqldEtX8s1DlRgHEWNy4_623P_pja4iDVdjY3zzqf1Wshaf-rlwIwhAzBa_ICGZ27n9iPg"
-        );
-        $datajson = [];
-        $data = [
-            "notification" => [
-                "title" => $title,
-                "body" => $body,
-                "click_action" => $click_action
-            ],
-            "to" => $to
-        ];
-        $json = $this->do_curl("https://fcm.googleapis.com/fcm/send", json_encode($data), $header);
-        $datajson[] = json_decode($json);
 
         return response()->json(
             [

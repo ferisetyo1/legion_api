@@ -89,6 +89,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('transaksiprivate/transbymonth',  [TransaksiPrivatController::class, 'transbymonth']);
     Route::get('transaksiprivate/detailperformatrans',  [TransaksiPrivatController::class, 'detailPerformaTrans']);
     Route::post('notif/createtoken',  [TokencloudmsgController::class, 'create']);
+    Route::post('sendnotifall',  [NotifController::class, 'createtoAll']);
     Route::post('sendnotif',  [NotifController::class, 'create']);
     Route::get('notif/show',  [NotifController::class, 'index']);
     Route::get('cart',  [CartController::class, 'index']);
