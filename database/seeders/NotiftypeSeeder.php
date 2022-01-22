@@ -58,6 +58,7 @@ class NotiftypeSeeder extends Seeder
                 'notiftypes_title' => "Pesanan Trainer Dikonfirmasi",
                 'notiftypes_body' => "Pemesanan private trainer telah dikonfirmasi, silakan cek detail transaksi untuk melihat jadwal private.",
                 'notiftypes_icon' => "",
+                'notiftypes_forapps' => true,
             ],
             [
                 'notiftypes_code' => "priv_ditolak",
