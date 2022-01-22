@@ -13,6 +13,15 @@ use function PHPUnit\Framework\isEmpty;
 
 class NotifController extends Controller
 {
+    public function FunctionName(Request $request)
+    {
+        $req= new Request();
+        $req->code="priv_selese";
+        $req->click_action="";
+        $req->params="";
+        $this->createtoAll($request);
+    }
+
     public function index(Request $request)
     {
         $notif = notif::with('type')->where('notif_user_id', auth()->user()->id)->paginate(10);
@@ -90,7 +99,7 @@ class NotifController extends Controller
         $user = User::find($request->user_id);
         if ($user->role == "trainer") {
             $click_action = "https://legionptapps.com" . $request->click_action;
-        } else if ($user->role == "trainer") {
+        } else if ($user->role == "customer") {
             $click_action = "https://legioncustapps.com" . $request->click_action;
         } else {
             $click_action = $request->click_action;
@@ -132,6 +141,63 @@ class NotifController extends Controller
                 'data' => $datajson,
                 'token' => $tokens,
                 'auth()->user()->id' => $user->id
+            ],
+            200
+        );
+    }
+
+    public function createtoAll(Request $request)
+    {
+        $to = $request->role;
+        $notiftype = notiftype::firstWhere('notiftypes_code', $request->code);
+
+        if ($to == 'all') {
+            $users = User::all();
+        } else {
+            $users = User::where('role', $to)->get();
+        }
+
+        foreach ($users as $key => $user) {
+            if ($user->role == "trainer") {
+                $click_action = "https://legionptapps.com" . $request->click_action;
+            } else if ($user->role == "customer") {
+                $click_action = "https://legioncustapps.com" . $request->click_action;
+            } else {
+                $click_action = $request->click_action;
+            }
+        }
+
+        $title = $notiftype->notiftypes_title;
+        $body = isEmpty($notiftype->notiftypes_params) ? $notiftype->notiftypes_body : vsprintf($notiftype->notiftypes_body, $request->params);
+        notif::create([
+            'notif_user_id' => $user->id,
+            'notif_type_id' => $notiftype->notiftypes_id,
+            'notif_body' => $body,
+            'notif_title' => $title,
+            'notif_click_action' => $click_action,
+        ]);
+
+        $header = array(
+            "content-type: application/json",
+            "Authorization: key=AAAAfEW--iw:APA91bFXP8FFYMwnitXBDAu8N6U6t5iuiOzxIxcbx8FgK9uYxy3nsBDJENqEZmp2o4kW8SeqldEtX8s1DlRgHEWNy4_623P_pja4iDVdjY3zzqf1Wshaf-rlwIwhAzBa_ICGZ27n9iPg"
+        );
+        $datajson = [];
+        $data = [
+            "notification" => [
+                "title" => $title,
+                "body" => $body,
+                "click_action" => $click_action
+            ],
+            "to" => $to
+        ];
+        $json = $this->do_curl("https://fcm.googleapis.com/fcm/send", json_encode($data), $header);
+        $datajson[] = json_decode($json);
+
+        return response()->json(
+            [
+                'status' => 'success',
+                'msg' => "Success",
+                'data' => $datajson,
             ],
             200
         );
