@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLogTransaksiPrivatesTable extends Migration
+class CreateLogTypeTransaksiPrivatesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,12 @@ class CreateLogTransaksiPrivatesTable extends Migration
      */
     public function up()
     {
-        Schema::create('legion_log_transaksi_privates', function (Blueprint $table) {
+        Schema::create('legion_log_type_transaksi_privates', function (Blueprint $table) {
             $table->id('log_id');
-            $table->integer('log_transaksi_id');
-            $table->integer('log_type_id');
+            $table->integer('log_code');
+            $table->string('log_title');
+            $table->text('log_body');
+            $table->boolean('log_red_flags')->default(false);
             $table->dateTime("log_create_at")->useCurrent();
             $table->dateTime("log_update_at")->useCurrent()->useCurrentOnUpdate();
         });
@@ -29,6 +31,6 @@ class CreateLogTransaksiPrivatesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('log_transaksi_privates');
+        Schema::dropIfExists('legion_log_type_transaksi_privates');
     }
 }

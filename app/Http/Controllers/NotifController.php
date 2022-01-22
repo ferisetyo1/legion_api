@@ -194,7 +194,7 @@ class NotifController extends Controller
                 'notif_title' => $title,
                 'notif_click_action' => $click_action,
             ]);
-            
+
             $tokens = tokencloudmsg::where("token_user_id", $user->id)->get();
             foreach ($tokens as $key => $value) {
                 $data = [

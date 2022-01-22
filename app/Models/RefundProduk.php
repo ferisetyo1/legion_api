@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class logTransaksiPrivate extends Model
+class RefundProduk extends Model
 {
     use HasFactory;
     protected $table="legion_log_transaksi_privates";
@@ -13,6 +13,9 @@ class logTransaksiPrivate extends Model
     public $timestamps = false;
     protected $fillable = [
         'log_transaksi_id',
-        'log_type_id',
+        'log_code',
+        'log_title',
+        'log_body',
+        'log_red_flags',
     ];
 }
