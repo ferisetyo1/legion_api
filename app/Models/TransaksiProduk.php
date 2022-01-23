@@ -9,7 +9,7 @@ class TransaksiProduk extends Model
 {
     use HasFactory;
     protected $primaryKey = "tp_id";
-    protected $table="legion_refund_produks";
+    protected $table="legion_transaksi_produks";
     public $timestamps = false;
     protected $fillable = [
         'tp_user_id',

@@ -133,9 +133,9 @@ class TransaksiProdukController extends Controller
         $data["tp_token_payment"] = md5(uniqid($data["tp_invoice"], true));
         $data["tp_user_id"] = $request->user()->id;
         $generateUrl = $this->generateUrl([
-            'inv' => $data["INV"],
-            // 'amount' => $data['tp_ongkir'] + $cart->get()->sum('cart_harga'),
-            'amount' => 1,
+            'inv' => $data["tp_invoice"],
+            'amount' => $data['tp_ongkir'] + $cart->get()->sum('cart_harga'),
+            // 'amount' => 1,
             'tp_token_payment'=>$data["tp_token_payment"]
         ]);
         $data["tp_checkout_url"] = isset($generateUrl['generatedUrl']) ? $generateUrl['generatedUrl'] : '';
