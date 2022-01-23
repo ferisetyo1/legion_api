@@ -17,7 +17,7 @@ class LogTypeTransaksiPrivateSeeder extends Seeder
         LogTypeTransaksiPrivate::create([
             'log_code'=>"priv_cancel",
             'log_title'=>"Dibatalkan",
-            'log_body'=>"Pesanan dibatalkan oleh penjual. Dana akan dikembalikan ke pembeli",
+            'log_body'=>"Pesanan dibatalkan oleh trainer. Dana akan dikembalikan ke customer",
             'log_red_flags'=>true,
         ]);
         LogTypeTransaksiPrivate::create([

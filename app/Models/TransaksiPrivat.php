@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Controllers\LogTransaksiPrivateController;
 use DateTime;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -167,6 +168,9 @@ class TransaksiPrivat extends Model
     public function getTpIsDoneAttribute($i)
     {
         if ($this->getTpSecondDiffEnd()<=0 && $this->tp_is_confirm==1) {
+            $log=new LogTransaksiPrivateController();
+            $log->create('priv_finish',$this->tp_id);
+            $log->create('priv_complete',$this->tp_id);
             $this->tp_is_done=true;
             $this->save();
             $this->refresh();

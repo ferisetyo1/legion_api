@@ -15,4 +15,9 @@ class logTransaksiPrivate extends Model
         'log_transaksi_id',
         'log_type_id',
     ];
+
+    public function type()
+    {
+        return $this->belongsTo(LogTypeTransaksiPrivate::class,'log_type_id','log_id');
+    }
 }

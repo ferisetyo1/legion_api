@@ -422,6 +422,8 @@ class TransaksiPrivatController extends Controller
         $header = array(
             "content-type: application/json"
         );
+        $log=new LogTransaksiPrivateController();
+        $log->create('priv_new',$transaksi->tp_id);
         $curl = $this->do_curl(
             "https://api-link.cashlez.com/validate_url",
             json_encode([
@@ -626,6 +628,8 @@ uDl3e11e6es212d2FvVhFntO1lFGjvB8e2GcWZ0XpKSsAUhm1B4=
         $req->params = [];
         $req->user_id = $transaksi->tp_user_id;
         $notifcontroller->create_user_tertentu($req);
+        $log=new LogTransaksiPrivateController();
+        $log->create('priv_confirm',$transaksi->tp_id);
         return  response()->json([
             'status' => 'success',
             'msg' => "Get data successfully",
@@ -646,6 +650,8 @@ uDl3e11e6es212d2FvVhFntO1lFGjvB8e2GcWZ0XpKSsAUhm1B4=
         $req->params = [];
         $req->user_id = $transaksi->tp_user_id;
         $notifcontroller->create_user_tertentu($req);
+        $log=new LogTransaksiPrivateController();
+        $log->create('priv_cancel',$transaksi->tp_id);
         return  response()->json([
             'status' => 'success',
             'msg' => "Get data successfully",
@@ -667,6 +673,6 @@ uDl3e11e6es212d2FvVhFntO1lFGjvB8e2GcWZ0XpKSsAUhm1B4=
 
     public function relation()
     {
-        return ['trainer', 'hargaTrainer', 'alamatprivate', 'customer'];
+        return ['trainer', 'hargaTrainer', 'alamatprivate', 'customer','log.type'];
     }
 }

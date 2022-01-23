@@ -8,14 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class RefundProduk extends Model
 {
     use HasFactory;
-    protected $table="legion_log_transaksi_privates";
-    protected $primaryKey = "log_id";
+    protected $table="legion_refund_produks";
+    protected $primaryKey = "refund_id";
     public $timestamps = false;
     protected $fillable = [
-        'log_transaksi_id',
-        'log_code',
-        'log_title',
-        'log_body',
-        'log_red_flags',
+        'refund_invoice',
+        'refund_nama_bank',
+        'refund_no_rek',
+        'refund_nama_rek',
+        'refund_nohp',
     ];
 }
