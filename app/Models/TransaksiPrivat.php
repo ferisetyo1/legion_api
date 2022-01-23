@@ -74,6 +74,11 @@ class TransaksiPrivat extends Model
         return $this->belongsTo(AlamatPrivate::class, 'tp_ap_id', 'ap_id');
     }
 
+    public function log()
+    {
+        return $this->hasMany(logTransaksiPrivate::class,'log_transaksi_id','tp_id');
+    }
+
     public function getTpJamPrivateEndAttribute()
     {
         $ht = HargaTrainer::find($this->tp_ht_id);

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRefundTransaksisTable extends Migration
+class CreateRefundProduksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -32,6 +32,6 @@ class CreateRefundTransaksisTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('legion_refund_transaksis');
+        Schema::dropIfExists('legion_refund_produks');
     }
 }

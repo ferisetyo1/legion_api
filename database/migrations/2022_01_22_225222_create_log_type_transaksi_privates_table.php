@@ -15,7 +15,7 @@ class CreateLogTypeTransaksiPrivatesTable extends Migration
     {
         Schema::create('legion_log_type_transaksi_privates', function (Blueprint $table) {
             $table->id('log_id');
-            $table->integer('log_code');
+            $table->string('log_code');
             $table->string('log_title');
             $table->text('log_body');
             $table->boolean('log_red_flags')->default(false);
